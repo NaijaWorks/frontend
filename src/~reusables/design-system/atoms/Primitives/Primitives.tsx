@@ -104,7 +104,8 @@ export type FlexProps = BoxProps &
 
 export const Flex = styled(Box)<FlexProps>(
   {
-    display: "flex"
+    display: "flex",
+    width: "100%"
   },
   alignSelf,
   order,
