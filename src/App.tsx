@@ -1,23 +1,13 @@
+// modules
 import React from "react";
-import { Container } from "./~reusables/design-system/atoms/Primitives/Primitives";
+import { Route } from "react-router-dom";
+import Landing from "./components/landing/Landing";
 
 const App: React.FC = () => {
   return (
-    <Container>
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </Container>
+    <>
+      <Route path="/" render={routeProps => <Landing {...routeProps} />} />
+    </>
   );
 };
 
