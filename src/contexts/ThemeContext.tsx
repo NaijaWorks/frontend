@@ -5,6 +5,74 @@ import baseStyled, {
 } from "styled-components";
 
 export const theme = {
+  breakpoints: [32],
+  space: [
+    0, // 0
+    1, // 1
+    2, // 2
+    3, // 3
+    5, // 4
+    8, // 5
+    13, // 6
+    21, // 7
+    34, // 8
+    55, // 9
+    89, // 10
+    144, // 11
+    233 // 12
+  ],
+  fontSizes: [
+    10, // 0
+    12, // 1
+    14, // 2
+    16, // 3
+    20, // 4
+    24, // 5
+    32, // 6
+    40, // 7
+    48 // 8
+  ],
+  fontWeights: [
+    100, // 0
+    200, // 1
+    300, // 2
+    400, // 3
+    500, // 4
+    600, // 5
+    700, // 6
+    800, // 7
+    900 // 8
+  ],
+  radii: [
+    0, // 0
+    2, // 1
+    6, // 2
+    16, // 3
+    9999, // 4
+    "100%" // 5
+  ],
+  borders: [
+    0, // 0
+    "1px solid", // 1
+    "2px solid", // 2
+    "4px solid" // 3
+  ],
+  lineHeights: {
+    solid: 1,
+    title: 1.25,
+    copy: 1.5
+  },
+  letterSpacing: {
+    normal: "normal",
+    tracked: "0.1em",
+    tight: "0.05em",
+    mega: "0.25em"
+  },
+  fonts: {
+    sansSerif:
+      '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif'
+  },
+  shadows: ["0 0 4px 2px rgba(32, 32, 32, 0.1)"],
   color: {
     primary: "#7484FB",
     title: "#1A202C",
