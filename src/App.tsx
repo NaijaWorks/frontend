@@ -1,9 +1,9 @@
 import React from "react";
-
+import { Container } from "./~reusables/design-system/atoms/Primitives/Primitives";
 
 const App: React.FC = () => {
   return (
-    <div className="App">
+    <Container>
       <header className="App-header">
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
@@ -17,7 +17,7 @@ const App: React.FC = () => {
           Learn React
         </a>
       </header>
-    </div>
+    </Container>
   );
 };
 

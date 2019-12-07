@@ -73,7 +73,7 @@ export const theme = {
       '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif'
   },
   shadows: ["0 0 4px 2px rgba(32, 32, 32, 0.1)"],
-  color: {
+  colors: {
     primary: "#7484FB",
     title: "#1A202C",
     text: "#4A5568",
