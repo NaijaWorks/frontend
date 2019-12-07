@@ -1,7 +1,17 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+// modules
+import React from "react";
+import ReactDOM from "react-dom";
 
-ReactDOM.render(<App />, document.getElementById('root'));
+// components
+import App from "./App";
+import ApolloContextProvider from "./contexts/ApolloContext";
 
+// styles
+import "./index.css";
+
+ReactDOM.render(
+  <ApolloContextProvider>
+    <App />
+  </ApolloContextProvider>,
+  document.getElementById("root")
+);
