@@ -4,14 +4,17 @@ import ReactDOM from "react-dom";
 
 // components
 import App from "./App";
-import ApolloContextProvider from "./contexts/ApolloContext";
+import ApolloProvider from "./contexts/ApolloContext";
+import ThemeProvider from "./contexts/ThemeContext";
 
 // styles
 import "./index.css";
 
 ReactDOM.render(
-  <ApolloContextProvider>
-    <App />
-  </ApolloContextProvider>,
+  <ApolloProvider>
+    <ThemeProvider>
+      <App />
+    </ThemeProvider>
+  </ApolloProvider>,
   document.getElementById("root")
 );
