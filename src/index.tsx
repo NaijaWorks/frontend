@@ -1,12 +1,23 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+// modules
+import React from "react";
+import ReactDOM from "react-dom";
+import { BrowserRouter as RouterProvider } from "react-router-dom";
 
-ReactDOM.render(<App />, document.getElementById('root'));
+// components
+import App from "./App";
+import ApolloProvider from "./contexts/ApolloContext";
+import ThemeProvider from "./contexts/ThemeContext";
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+// styles
+import "./index.css";
+
+ReactDOM.render(
+  <ApolloProvider>
+    <ThemeProvider>
+      <RouterProvider>
+        <App />
+      </RouterProvider>
+    </ThemeProvider>
+  </ApolloProvider>,
+  document.getElementById("root")
+);

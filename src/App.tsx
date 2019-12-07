@@ -1,12 +1,10 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Container } from "./~reusables/design-system/atoms/Primitives/Primitives";
 
 const App: React.FC = () => {
   return (
-    <div className="App">
+    <Container>
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
@@ -19,8 +17,8 @@ const App: React.FC = () => {
           Learn React
         </a>
       </header>
-    </div>
+    </Container>
   );
-}
+};
 
 export default App;
