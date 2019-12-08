@@ -1,7 +1,9 @@
 import { styled } from "../../../../contexts/ThemeContext";
+import { space, SpaceProps } from "styled-system";
 
-export const Button = styled("button")`
-  font-size: ${props => props.theme.fontSizes[3]};
+export const Button = styled("button")<SpaceProps>`
+  ${space};
+  font-size: ${props => props.theme.fontSizes[3]}px;
   padding: ${props => `${props.theme.space[5]}px ${props.theme.space[7]}px`};
   font-weight: 500;
   min-width: "140px";
@@ -21,9 +23,6 @@ export const Button = styled("button")`
 
   &:active {
     opacity: 0.8;
-    box-shadow: 0 6px 10px 0 rgba(40, 51, 63, 0.11);
-    -webkit-box-shadow: 0 6px 10px 0 rgba(40, 51, 63, 0.11);
-    -moz-box-shadow: 0 6px 10px 0 rgba(40, 51, 63, 0.11);
   }
 `;
 

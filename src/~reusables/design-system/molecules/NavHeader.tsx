@@ -12,6 +12,7 @@ const NavHeader: React.FC = () => {
   const auth = useContext(AuthContext);
   return (
     <Container
+      as="nav"
       justifyContent="space-between"
       alignItems="center"
       py={7}
