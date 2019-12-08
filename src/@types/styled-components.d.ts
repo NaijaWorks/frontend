@@ -3,7 +3,7 @@ import { CSSProp } from "styled-components";
 
 declare module "styled-components" {
   export interface DefaultTheme {
-    breakpoints: number[];
+    breakpoints: string[];
     space: number[];
     fontSizes: number[];
     fontWeights: number[];
@@ -23,8 +23,13 @@ declare module "styled-components" {
     fonts: {
       sansSerif: string;
     };
-    shadows: string[];
+    shadows: {
+      shallow: string;
+      deep: string;
+      deepDark: string;
+    };
     colors: {
+      white: string;
       primary: string;
       title: string;
       text: string;

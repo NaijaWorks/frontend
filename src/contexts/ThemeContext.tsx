@@ -5,7 +5,7 @@ import baseStyled, {
 } from "styled-components";
 
 export const theme = {
-  breakpoints: [32],
+  breakpoints: ["767px"],
   space: [
     0, // 0
     1, // 1
@@ -72,8 +72,17 @@ export const theme = {
     sansSerif:
       '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif'
   },
-  shadows: ["0 0 4px 2px rgba(32, 32, 32, 0.1)"],
+  shadows: {
+    shallow:
+      "0px 6px 7px rgba(151, 162, 185, 0.09), 0px 5px 15px rgba(151, 162, 185, 0.07), 0px 14px 19px rgba(151, 162, 185, 0.07)",
+    deep:
+      "0px 11px 15px rgba(151, 162, 185, 0.2), 0px 9px 46px rgba(151, 162, 185, 0.12), 0px 24px 38px rgba(151, 162, 185, 0.14)",
+    deepDark:
+      "0px 11px 15px rgba(26, 32, 44, 0.2), 0px 9px 46px rgba(151, 162, 185, 0.12), 0px 24px 38px rgba(26, 32, 44, 0.14)"
+  },
+
   colors: {
+    white: "#FFFFFF",
     primary: "#7484FB",
     title: "#1A202C",
     text: "#4A5568",

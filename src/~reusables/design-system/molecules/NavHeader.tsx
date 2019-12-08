@@ -5,25 +5,27 @@ import { Search } from "react-feather";
 
 // components
 import { Container, Flex, Box } from "../atoms/Primitives/Primitives";
-import { H3, P2 } from "../atoms/Text/Text";
+import { H3 } from "../atoms/Text/Text";
 import { AuthContext } from "../../../contexts/AuthContext";
+import { TextButton } from "../atoms/Button/Button";
 
 const NavHeader: React.FC = () => {
   const auth = useContext(AuthContext);
   return (
     <Container
+      as="nav"
       justifyContent="space-between"
       alignItems="center"
       py={7}
       width="100%"
     >
       <Link to="/">
-        <H3 color="lightTitle">NaijaHacks</H3>
+        <H3 color="lightTitle">NaijaWorks</H3>
       </Link>
       {auth.userId ? (
         <Flex alignItems="center">
           <Box bg="primary" borderRadius={5} p={4} mr={5}>
-            <Search color="white" />
+            <Search width={16} height={16} color="white" />
           </Box>
           <Box
             bg="lightBackground"
@@ -33,9 +35,7 @@ const NavHeader: React.FC = () => {
           ></Box>
         </Flex>
       ) : (
-        <Link to="/login">
-          <P2 color="primary">Login</P2>
-        </Link>
+        <TextButton color="primary">Login</TextButton>
       )}
     </Container>
   );
