@@ -13,7 +13,12 @@ interface CardProps {
   photoURL: string;
 }
 
-const FreelancerCard: React.FC<CardProps> = ({ name, role, shortBio, photoURL }) => {
+const FreelancerCard: React.FC<CardProps> = ({
+  name,
+  role,
+  shortBio,
+  photoURL
+}) => {
   return (
     <StyledFreelancerCard>
       <Box width="70%" p={6}>
