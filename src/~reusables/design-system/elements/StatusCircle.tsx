@@ -11,15 +11,17 @@ interface StatusCircleProps {
   checked: boolean;
   active: boolean;
   text: string;
+  callback?: () => void;
 }
 
 const StatusCircle: React.FC<StatusCircleProps> = ({
   checked,
   text,
-  active
+  active,
+  callback
 }) => {
   return (
-    <StyledStatusCircle>
+    <StyledStatusCircle onClick={callback}>
       <Container
         justifyContent="center"
         alignItems="center"
