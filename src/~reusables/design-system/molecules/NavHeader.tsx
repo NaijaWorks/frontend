@@ -7,8 +7,9 @@ import { Search } from "react-feather";
 import { Container, Flex, Box } from "../atoms/Primitives/Primitives";
 import { H3 } from "../atoms/Text/Text";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { TextButton } from "../atoms/Button/Button";
+import { TextButton, PrimaryButton } from "../atoms/Button/Button";
 import PopupModal from "./PopupModal";
+import { Input } from "../atoms/Input/Input";
 
 const NavHeader: React.FC = () => {
   const [modal, setModal] = useState(false);
@@ -16,11 +17,12 @@ const NavHeader: React.FC = () => {
   return (
     <>
       {modal && (
-        <PopupModal
-          title="Log in to your account"
-          setModal={setModal}
-        >
-          FORMS
+        <PopupModal title="Log in to your account" setModal={setModal}>
+          <Input width="100%" placeholder="Email address" type="text" />
+          <Input width="100%" placeholder="Password" type="password" />
+          <Flex justifyContent="flex-end">
+            <PrimaryButton>Log in</PrimaryButton>
+          </Flex>
         </PopupModal>
       )}
       <Container

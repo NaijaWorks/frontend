@@ -20,15 +20,15 @@ export const Input = styled("input")<LayoutProps>`
   }
 
   ::placeholder {
-    color: ${props => props.theme.colors.grey};
+    color: ${props => props.theme.colors.greys[5]};
     opacity: 1;
   }
 
   :-ms-input-placeholder {
-    color: ${props => props.theme.colors.grey};
+    color: ${props => props.theme.colors.greys[5]};
   }
 
   ::-ms-input-placeholder {
-    color: ${props => props.theme.colors.grey};
+    color: ${props => props.theme.colors.greys[5]};
   }
 `;

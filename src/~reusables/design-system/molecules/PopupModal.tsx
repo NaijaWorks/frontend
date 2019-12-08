@@ -4,7 +4,7 @@ import { X } from "react-feather";
 
 // components
 import { styled } from "../../../contexts/ThemeContext";
-import { H5 } from "../atoms/Text/Text";
+import { H4 } from "../atoms/Text/Text";
 import { Flex } from "../atoms/Primitives/Primitives";
 import { MAX_MODAL_WIDTH } from "../globals/metrics";
 
@@ -24,7 +24,7 @@ const PopupModal: React.FC<PopupModalProps> = ({
         <div className="popup-inner">
           <section className="header">
             <Flex justifyContent="space-between">
-              <H5>{title}</H5>
+              <H4>{title}</H4>
               <X cursor="pointer" onClick={() => setModal(false)} />
             </Flex>
           </section>

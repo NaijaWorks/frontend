@@ -32,7 +32,11 @@ const Landing: React.FC<LandingProps> = () => {
     <>
       {modal && (
         <PopupModal title="Create a new account" setModal={setModal}>
-          <Input width="100%"  />
+          <Input width="100%" placeholder="Email address" type="text" />
+          <Input width="100%" placeholder="Password" type="password" />
+          <Flex justifyContent="flex-end">
+            <PrimaryButton>Sign up</PrimaryButton>
+          </Flex>
         </PopupModal>
       )}
       <StyledTopLanding>
@@ -126,7 +130,7 @@ const StyledTopLanding = styled.div`
   margin: 0 auto;
   padding: 0 ${props => props.theme.space[7]}px;
   background: ${props => props.theme.colors.background};
-  button {
+  .box-container button {
     box-shadow: ${props => props.theme.shadows.deepDark};
     -webkit-box-shadow: ${props => props.theme.shadows.deepDark};
     -moz-box-shadow: ${props => props.theme.shadows.deepDark};
