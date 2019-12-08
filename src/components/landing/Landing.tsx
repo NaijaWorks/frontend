@@ -1,8 +1,7 @@
 // modules
-import React from "react";
+import React, { useState } from "react";
 import { RouteComponentProps } from "react-router";
 import { styled } from "../../contexts/ThemeContext";
-import { css } from "styled-components/macro";
 
 // components
 import {
@@ -17,56 +16,121 @@ import {
   SecondaryButton
 } from "../../~reusables/design-system/atoms/Button/Button";
 import profile from "../../~reusables/assets/Profile.png";
+import FreelancerCard from "../../~reusables/design-system/molecules/FreelancerCard";
+import PopupModal from "../../~reusables/design-system/molecules/PopupModal";
+import { Input } from "../../~reusables/design-system/atoms/Input/Input";
 
-// STYLES
+// styles
 import { MAX_PAGE_WIDTH } from "../../~reusables/design-system/globals/metrics";
 
 interface LandingProps extends RouteComponentProps {}
 
 const Landing: React.FC<LandingProps> = () => {
+  const [modal, setModal] = useState(false);
+
   return (
-    <StyledLanding>
-      <Container
-        maxWidth={MAX_PAGE_WIDTH}
-        margin="0 auto"
-        flexDirection="column"
-      >
-        <NavHeader />
-        <Flex
-          className="flex-container"
-          as="header"
-          justifyContent="space-between"
-          pt={7}
-          pb={9}
+    <>
+      {modal && (
+        <PopupModal title="Create a new account" setModal={setModal}>
+          <Input width="100%" placeholder="Email address" type="text" />
+          <Input width="100%" placeholder="Password" type="password" />
+          <Flex justifyContent="flex-end">
+            <PrimaryButton>Sign up</PrimaryButton>
+          </Flex>
+        </PopupModal>
+      )}
+      <StyledTopLanding>
+        <Container
+          maxWidth={MAX_PAGE_WIDTH}
+          margin="0 auto"
+          flexDirection="column"
         >
-          <Box className="box-container">
-            <H1 color="lightTitle">
-              The talent you need.
-              <br /> The flexibility you want.
-            </H1>
-            <P1 py={7} color="lightText">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore.
-            </P1>
-            <Flex>
-              <PrimaryButton mr={7}>Become a freelancer</PrimaryButton>
-              <SecondaryButton>Find talent</SecondaryButton>
-            </Flex>
-          </Box>
-          <Box className="profile box-container">
-            <img className="img-profile" src={profile} alt="profile" />
-          </Box>
-        </Flex>
-      </Container>
-    </StyledLanding>
+          <NavHeader />
+          <Flex
+            className="flex-container"
+            as="header"
+            justifyContent="space-between"
+            pt={7}
+            pb={9}
+          >
+            <Box className="box-container">
+              <H1 color="lightTitle">
+                The talent you need.
+                <br /> The flexibility you want.
+              </H1>
+              <P1 py={7} color="lightText">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore.
+              </P1>
+              <Flex>
+                <PrimaryButton onClick={() => setModal(true)} mr={7}>
+                  Become a freelancer
+                </PrimaryButton>
+                <SecondaryButton>Find talent</SecondaryButton>
+              </Flex>
+            </Box>
+            <Box className="profile box-container">
+              <img src={profile} alt="profile" />
+            </Box>
+          </Flex>
+        </Container>
+      </StyledTopLanding>
+      <StyledBottomLanding>
+        <FreelancerCard
+          name="Firstname, lastname"
+          role="role"
+          shortBio="short one line bio"
+          photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
+        />
+        <FreelancerCard
+          name="Firstname, lastname"
+          role="role"
+          shortBio="short one line bio"
+          photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
+        />
+        <FreelancerCard
+          name="Firstname, lastname"
+          role="role"
+          shortBio="short one line bio"
+          photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
+        />
+        <FreelancerCard
+          name="Firstname, lastname"
+          role="role"
+          shortBio="short one line bio"
+          photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
+        />
+        <FreelancerCard
+          name="Firstname, lastname"
+          role="role"
+          shortBio="short one line bio"
+          photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
+        />
+        <FreelancerCard
+          name="Firstname, lastname"
+          role="role"
+          shortBio="short one line bio"
+          photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
+        />
+      </StyledBottomLanding>
+    </>
   );
 };
 
-const StyledLanding = styled.div`
+const StyledBottomLanding = styled.div`
+  margin: 0 auto;
+  padding: ${props => props.theme.space[7]}px;
+  max-width: ${MAX_PAGE_WIDTH}px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: ${props => props.theme.space[8]}px;
+`;
+
+const StyledTopLanding = styled.div`
   margin: 0 auto;
   padding: 0 ${props => props.theme.space[7]}px;
   background: ${props => props.theme.colors.background};
-  button {
+  .box-container button {
     box-shadow: ${props => props.theme.shadows.deepDark};
     -webkit-box-shadow: ${props => props.theme.shadows.deepDark};
     -moz-box-shadow: ${props => props.theme.shadows.deepDark};
@@ -78,7 +142,7 @@ const StyledLanding = styled.div`
 
   .profile {
     position: relative;
-    .img-profile {
+    img {
       width: 100%;
       max-width: 500px;
       min-width: 400px;
