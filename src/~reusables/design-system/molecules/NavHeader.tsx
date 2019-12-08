@@ -5,8 +5,9 @@ import { Search } from "react-feather";
 
 // components
 import { Container, Flex, Box } from "../atoms/Primitives/Primitives";
-import { H3, P2 } from "../atoms/Text/Text";
+import { H3 } from "../atoms/Text/Text";
 import { AuthContext } from "../../../contexts/AuthContext";
+import { TextButton } from "../atoms/Button/Button";
 
 const NavHeader: React.FC = () => {
   const auth = useContext(AuthContext);
@@ -19,7 +20,7 @@ const NavHeader: React.FC = () => {
       width="100%"
     >
       <Link to="/">
-        <H3 color="lightTitle">NaijaHacks</H3>
+        <H3 color="lightTitle">NaijaWorks</H3>
       </Link>
       {auth.userId ? (
         <Flex alignItems="center">
@@ -34,7 +35,7 @@ const NavHeader: React.FC = () => {
           ></Box>
         </Flex>
       ) : (
-        <P2 color="primary">Login</P2>
+        <TextButton color="primary">Login</TextButton>
       )}
     </Container>
   );

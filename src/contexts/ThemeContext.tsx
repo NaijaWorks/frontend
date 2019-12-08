@@ -5,7 +5,7 @@ import baseStyled, {
 } from "styled-components";
 
 export const theme = {
-  breakpoints: [32],
+  breakpoints: ["767px"],
   space: [
     0, // 0
     1, // 1

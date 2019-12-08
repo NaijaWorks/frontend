@@ -7,7 +7,7 @@ export const Button = styled("button")<SpaceProps>`
   padding: ${props => `${props.theme.space[5]}px ${props.theme.space[7]}px`};
   font-weight: 500;
   min-width: "140px";
-  height: 40px;
+  min-height: 40px;
   border: none;
   outline: none;
   border-radius: ${props => props.theme.radii[2]}px;

@@ -3,7 +3,7 @@ import { CSSProp } from "styled-components";
 
 declare module "styled-components" {
   export interface DefaultTheme {
-    breakpoints: number[];
+    breakpoints: string[];
     space: number[];
     fontSizes: number[];
     fontWeights: number[];
