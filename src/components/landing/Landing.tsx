@@ -2,7 +2,6 @@
 import React from "react";
 import { RouteComponentProps } from "react-router";
 import { styled } from "../../contexts/ThemeContext";
-import { css } from "styled-components/macro";
 
 // components
 import {
@@ -20,49 +19,99 @@ import profile from "../../~reusables/assets/Profile.png";
 
 // STYLES
 import { MAX_PAGE_WIDTH } from "../../~reusables/design-system/globals/metrics";
+import FreelancerCard from "../../~reusables/design-system/molecules/FreelancerCard";
 
 interface LandingProps extends RouteComponentProps {}
 
 const Landing: React.FC<LandingProps> = () => {
   return (
-    <StyledLanding>
-      <Container
-        maxWidth={MAX_PAGE_WIDTH}
-        margin="0 auto"
-        flexDirection="column"
-      >
-        <NavHeader />
-        <Flex
-          className="flex-container"
-          as="header"
-          justifyContent="space-between"
-          pt={7}
-          pb={9}
+    <>
+      <StyledTopLanding>
+        <Container
+          maxWidth={MAX_PAGE_WIDTH}
+          margin="0 auto"
+          flexDirection="column"
         >
-          <Box className="box-container">
-            <H1 color="lightTitle">
-              The talent you need.
-              <br /> The flexibility you want.
-            </H1>
-            <P1 py={7} color="lightText">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore.
-            </P1>
-            <Flex>
-              <PrimaryButton mr={7}>Become a freelancer</PrimaryButton>
-              <SecondaryButton>Find talent</SecondaryButton>
-            </Flex>
-          </Box>
-          <Box className="profile box-container">
-            <img className="img-profile" src={profile} alt="profile" />
-          </Box>
-        </Flex>
-      </Container>
-    </StyledLanding>
+          <NavHeader />
+          <Flex
+            className="flex-container"
+            as="header"
+            justifyContent="space-between"
+            pt={7}
+            pb={9}
+          >
+            <Box className="box-container">
+              <H1 color="lightTitle">
+                The talent you need.
+                <br /> The flexibility you want.
+              </H1>
+              <P1 py={7} color="lightText">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore.
+              </P1>
+              <Flex>
+                <PrimaryButton mr={7}>Become a freelancer</PrimaryButton>
+                <SecondaryButton>Find talent</SecondaryButton>
+              </Flex>
+            </Box>
+            <Box className="profile box-container">
+              <img src={profile} alt="profile" />
+            </Box>
+          </Flex>
+        </Container>
+      </StyledTopLanding>
+      <StyledBottomLanding>
+        <FreelancerCard
+          name="Firstname, lastname"
+          role="role"
+          shortBio="short one line bio"
+          photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
+        />
+        <FreelancerCard
+          name="Firstname, lastname"
+          role="role"
+          shortBio="short one line bio"
+          photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
+        />
+        <FreelancerCard
+          name="Firstname, lastname"
+          role="role"
+          shortBio="short one line bio"
+          photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
+        />
+        <FreelancerCard
+          name="Firstname, lastname"
+          role="role"
+          shortBio="short one line bio"
+          photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
+        />
+        <FreelancerCard
+          name="Firstname, lastname"
+          role="role"
+          shortBio="short one line bio"
+          photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
+        />
+        <FreelancerCard
+          name="Firstname, lastname"
+          role="role"
+          shortBio="short one line bio"
+          photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
+        />
+      </StyledBottomLanding>
+    </>
   );
 };
 
-const StyledLanding = styled.div`
+const StyledBottomLanding = styled.div`
+  margin: 0 auto;
+  padding: ${props => props.theme.space[7]}px;
+  max-width: ${MAX_PAGE_WIDTH}px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: ${props => props.theme.space[8]}px;
+`;
+
+const StyledTopLanding = styled.div`
   margin: 0 auto;
   padding: 0 ${props => props.theme.space[7]}px;
   background: ${props => props.theme.colors.background};
@@ -78,7 +127,7 @@ const StyledLanding = styled.div`
 
   .profile {
     position: relative;
-    .img-profile {
+    img {
       width: 100%;
       max-width: 500px;
       min-width: 400px;
