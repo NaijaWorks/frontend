@@ -16,11 +16,12 @@ import {
   SecondaryButton
 } from "../../~reusables/design-system/atoms/Button/Button";
 import profile from "../../~reusables/assets/Profile.png";
-
-// STYLES
-import { MAX_PAGE_WIDTH } from "../../~reusables/design-system/globals/metrics";
 import FreelancerCard from "../../~reusables/design-system/molecules/FreelancerCard";
 import PopupModal from "../../~reusables/design-system/molecules/PopupModal";
+import { Input } from "../../~reusables/design-system/atoms/Input/Input";
+
+// styles
+import { MAX_PAGE_WIDTH } from "../../~reusables/design-system/globals/metrics";
 
 interface LandingProps extends RouteComponentProps {}
 
@@ -31,7 +32,7 @@ const Landing: React.FC<LandingProps> = () => {
     <>
       {modal && (
         <PopupModal title="Create a new account" setModal={setModal}>
-          Sign up
+          <Input width="100%"  />
         </PopupModal>
       )}
       <StyledTopLanding>
