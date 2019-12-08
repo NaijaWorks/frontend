@@ -23,8 +23,13 @@ declare module "styled-components" {
     fonts: {
       sansSerif: string;
     };
-    shadows: string[];
+    shadows: {
+      shallow: string;
+      deep: string;
+      deepDark: string;
+    };
     colors: {
+      white: string;
       primary: string;
       title: string;
       text: string;

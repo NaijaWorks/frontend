@@ -23,7 +23,7 @@ const NavHeader: React.FC = () => {
       {auth.userId ? (
         <Flex alignItems="center">
           <Box bg="primary" borderRadius={5} p={4} mr={5}>
-            <Search color="white" />
+            <Search width={16} height={16} color="white" />
           </Box>
           <Box
             bg="lightBackground"
@@ -33,9 +33,7 @@ const NavHeader: React.FC = () => {
           ></Box>
         </Flex>
       ) : (
-        <Link to="/login">
-          <P2 color="primary">Login</P2>
-        </Link>
+        <P2 color="primary">Login</P2>
       )}
     </Container>
   );
