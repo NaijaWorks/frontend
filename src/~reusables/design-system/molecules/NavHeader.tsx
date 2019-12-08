@@ -15,9 +15,9 @@ const NavHeader: React.FC = () => {
   const auth = useContext(AuthContext);
   return (
     <>
-      {true && (
+      {modal && (
         <PopupModal
-          title="Log in"
+          title="Log in to your account"
           setModal={setModal}
         >
           FORMS

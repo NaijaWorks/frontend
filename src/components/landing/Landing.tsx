@@ -1,5 +1,5 @@
 // modules
-import React from "react";
+import React, { useState } from "react";
 import { RouteComponentProps } from "react-router";
 import { styled } from "../../contexts/ThemeContext";
 
@@ -20,12 +20,20 @@ import profile from "../../~reusables/assets/Profile.png";
 // STYLES
 import { MAX_PAGE_WIDTH } from "../../~reusables/design-system/globals/metrics";
 import FreelancerCard from "../../~reusables/design-system/molecules/FreelancerCard";
+import PopupModal from "../../~reusables/design-system/molecules/PopupModal";
 
 interface LandingProps extends RouteComponentProps {}
 
 const Landing: React.FC<LandingProps> = () => {
+  const [modal, setModal] = useState(false);
+
   return (
     <>
+      {modal && (
+        <PopupModal title="Create a new account" setModal={setModal}>
+          Sign up
+        </PopupModal>
+      )}
       <StyledTopLanding>
         <Container
           maxWidth={MAX_PAGE_WIDTH}
@@ -50,7 +58,9 @@ const Landing: React.FC<LandingProps> = () => {
                 eiusmod tempor incididunt ut labore et dolore.
               </P1>
               <Flex>
-                <PrimaryButton mr={7}>Become a freelancer</PrimaryButton>
+                <PrimaryButton onClick={() => setModal(true)} mr={7}>
+                  Become a freelancer
+                </PrimaryButton>
                 <SecondaryButton>Find talent</SecondaryButton>
               </Flex>
             </Box>
