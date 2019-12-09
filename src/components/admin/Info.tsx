@@ -10,6 +10,7 @@ import {
 } from "../../~reusables/design-system/atoms/Primitives/Primitives";
 import { Input } from "../../~reusables/design-system/atoms/Input/Input";
 import { PrimaryButton } from "../../~reusables/design-system/atoms/Button/Button";
+import Checkbox from "../../~reusables/design-system/atoms/Checkbox/Checkbox";
 
 const Info = () => {
   return (
@@ -35,11 +36,21 @@ const Info = () => {
         <Input width="100%" placeholder="Longbio" type="text" />
         <Box className="checkbox-column" width="100%">
           <Input placeholder="Email" type="text" />
-          <Input placeholder="Email" type="text" />
+          <Checkbox
+            label="Show email"
+            value=""
+            checked={true}
+            onChange={() => console.log()}
+          />
         </Box>
         <Box className="checkbox-column" width="100%">
           <Input placeholder="Phone Number" type="text" />
-          <Input placeholder="Email" type="text" />
+          <Checkbox
+            label="Show number"
+            value=""
+            checked={false}
+            onChange={() => console.log()}
+          />
         </Box>
         <Input width="100%" placeholder="Location" type="text" />
         <PrimaryButton>Save basic info</PrimaryButton>
@@ -72,7 +83,7 @@ const StyledInfo = styled.section`
 
   .checkbox-column {
     display: grid;
-    grid-template-columns: 1fr 40px;
+    grid-template-columns: 1fr 140px;
     gap: 0 ${props => props.theme.space[6]}px;
   }
 
