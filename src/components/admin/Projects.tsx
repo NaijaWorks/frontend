@@ -5,7 +5,8 @@ import React, { useState } from "react";
 import { styled } from "../../contexts/ThemeContext";
 import {
   Flex,
-  Container
+  Container,
+  Box
 } from "../../~reusables/design-system/atoms/Primitives/Primitives";
 import { Input } from "../../~reusables/design-system/atoms/Input/Input";
 import { H4 } from "../../~reusables/design-system/atoms/Text/Text";
@@ -14,6 +15,7 @@ import {
   TextButton,
   SecondaryButton
 } from "../../~reusables/design-system/atoms/Button/Button";
+import ProjectCard from "../../~reusables/design-system/molecules/ProjectCard";
 
 const projects = [
   {
@@ -36,14 +38,16 @@ const projects = [
   }
 ];
 
+const initialProjectState = {
+  title: "",
+  imageURL: "",
+  description: "",
+  projectURL: "",
+  userID: ""
+};
+
 const Projects = () => {
-  const [project, setProject] = useState({
-    title: "",
-    imageURL: "",
-    description: "",
-    projectURL: "",
-    userID: ""
-  });
+  const [project, setProject] = useState(initialProjectState);
 
   return (
     <StyledProjects>
@@ -102,7 +106,18 @@ const Projects = () => {
             </li>
           ))}
         </ol>
-        <SecondaryButton>Add new project</SecondaryButton>
+        <SecondaryButton onClick={() => setProject(initialProjectState)}>
+          Add new project
+        </SecondaryButton>
+        <Box p={7} />
+        {project.title && (
+          <ProjectCard
+            title={project.title}
+            imageURL={project.imageURL}
+            description={project.description}
+            projectURL={project.projectURL}
+          />
+        )}
       </Flex>
     </StyledProjects>
   );
