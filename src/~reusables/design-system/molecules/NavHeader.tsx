@@ -10,12 +10,16 @@ import { AuthContext } from "../../../contexts/AuthContext";
 import { TextButton, PrimaryButton } from "../atoms/Button/Button";
 import PopupModal from "./PopupModal";
 import { Input } from "../atoms/Input/Input";
+import { styled } from "../../../contexts/ThemeContext";
+
+// styles
+import { MAX_PAGE_WIDTH } from "../globals/metrics";
 
 const NavHeader: React.FC = () => {
   const [modal, setModal] = useState(false);
   const auth = useContext(AuthContext);
   return (
-    <>
+    <StyledNavHeader>
       {modal && (
         <PopupModal title="Log in to your account" setModal={setModal}>
           <Input width="100%" placeholder="Email address" type="text" />
@@ -31,6 +35,8 @@ const NavHeader: React.FC = () => {
         alignItems="center"
         py={7}
         width="100%"
+        margin="0 auto"
+        maxWidth={MAX_PAGE_WIDTH}
       >
         <Link to="/">
           <H3 color="lightTitle">NaijaWorks</H3>
@@ -53,8 +59,13 @@ const NavHeader: React.FC = () => {
           </TextButton>
         )}
       </Container>
-    </>
+    </StyledNavHeader>
   );
 };
+
+const StyledNavHeader = styled.div`
+  padding: 0 ${props => props.theme.space[7]}px;
+  background: ${props => props.theme.colors.background};
+`;
 
 export default NavHeader;

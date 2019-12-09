@@ -39,13 +39,13 @@ const Landing: React.FC<LandingProps> = () => {
           </Flex>
         </PopupModal>
       )}
+      <NavHeader />
       <StyledTopLanding>
         <Container
           maxWidth={MAX_PAGE_WIDTH}
           margin="0 auto"
           flexDirection="column"
         >
-          <NavHeader />
           <Flex
             className="flex-container"
             as="header"
