@@ -21,7 +21,7 @@ enum AdminView {
 }
 
 const Admin: React.FC<AdminProps> = () => {
-  const [adminView, setAdminView] = useState<AdminView>(AdminView.INFO);
+  const [adminView, setAdminView] = useState<AdminView>(AdminView.PROJECTS);
 
   return (
     <>
