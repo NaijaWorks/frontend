@@ -7,6 +7,9 @@ import { Container } from "../../~reusables/design-system/atoms/Primitives/Primi
 // components
 import NavHeader from "../../~reusables/design-system/molecules/NavHeader";
 import StatusCircle from "../../~reusables/design-system/elements/StatusCircle";
+import Info from "./Info";
+import Skills from "./Skills";
+import Projects from "./Projects";
 
 // styles
 
@@ -44,6 +47,15 @@ const Admin: React.FC<AdminProps> = () => {
             active={adminView === AdminView.PROJECTS ? true : false}
           />
         </div>
+        <div className="admin-container">
+          {adminView === AdminView.INFO ? (
+            <Info />
+          ) : adminView === AdminView.SKILLS ? (
+            <Skills />
+          ) : adminView === AdminView.PROJECTS ? (
+            <Projects />
+          ) : null}
+        </div>
       </StyledAdmin>
     </>
   );
@@ -53,10 +65,16 @@ const StyledAdmin = styled(Container)`
   border: 1px solid red;
   padding: ${props => props.theme.space[8]}px
     ${props => props.theme.space[11]}px;
+
   .status-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
   }
+
+  .admin-container {
+    margin: ${props => props.theme.space[6]}px 0;
+  }
+
 
   @media only screen and (max-width: ${props => props.theme.breakpoints[0]}) {
     padding: ${props => props.theme.space[6]}px;

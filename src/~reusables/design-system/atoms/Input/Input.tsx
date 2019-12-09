@@ -1,8 +1,9 @@
 import { styled } from "../../../../contexts/ThemeContext";
-import { layout, LayoutProps } from "styled-system";
+import { layout, LayoutProps, space, SpaceProps } from "styled-system";
 
-export const Input = styled("input")<LayoutProps>`
+export const Input = styled("input")<LayoutProps & SpaceProps>`
   ${layout};
+  ${space};
   font-size: ${props => props.theme.fontSizes[3]}px;
   transition: all 100ms ease-in-out;
   min-height: 40px;
