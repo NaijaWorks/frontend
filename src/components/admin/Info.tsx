@@ -12,9 +12,11 @@ import { Input } from "../../~reusables/design-system/atoms/Input/Input";
 import { PrimaryButton } from "../../~reusables/design-system/atoms/Button/Button";
 import Checkbox from "../../~reusables/design-system/atoms/Checkbox/Checkbox";
 import FreelancerCard from "../../~reusables/design-system/molecules/FreelancerCard";
+import FreelancerProfileCard from "../../~reusables/design-system/molecules/FreelancerProfileCard";
 
 const Info = () => {
   const [info, setInfo] = useState({
+    photoURL: "",
     firstName: "",
     lastName: "",
     role: "",
@@ -127,6 +129,17 @@ const Info = () => {
           shortBio={info.shortBio}
           photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
         />
+        <Box p={7} />
+        <FreelancerProfileCard
+          name={`${info.firstName} ${info.lastName}`}
+          role={info.role}
+          longBio={info.longBio}
+          photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
+          email={info.email}
+          showEmail={info.showEmail}
+          phoneNumber={info.phoneNumber}
+          showPhoneNumber={info.showPhoneNumber}
+        />
       </Flex>
     </StyledInfo>
   );
@@ -135,7 +148,7 @@ const Info = () => {
 const StyledInfo = styled.section`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: ${props => props.theme.space[7]}px;
+  gap: ${props => props.theme.space[8]}px;
 
   img {
     width: 100%;
