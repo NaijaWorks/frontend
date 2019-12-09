@@ -65,7 +65,7 @@ const StyledLabel = styled("label")`
   &:hover input ~ .checkmark {
     border-color: ${props => props.theme.colors.primary};
   }
-  
+
   input:checked ~ .checkmark {
     background: ${props => props.theme.colors.primary};
     border-color: ${props => props.theme.colors.primary};

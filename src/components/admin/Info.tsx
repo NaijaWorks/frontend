@@ -1,5 +1,5 @@
 // modules
-import React from "react";
+import React, { useState } from "react";
 
 // components
 import { styled } from "../../contexts/ThemeContext";
@@ -11,8 +11,22 @@ import {
 import { Input } from "../../~reusables/design-system/atoms/Input/Input";
 import { PrimaryButton } from "../../~reusables/design-system/atoms/Button/Button";
 import Checkbox from "../../~reusables/design-system/atoms/Checkbox/Checkbox";
+import FreelancerCard from "../../~reusables/design-system/molecules/FreelancerCard";
 
 const Info = () => {
+  const [info, setInfo] = useState({
+    firstName: "",
+    lastName: "",
+    role: "",
+    shortBio: "",
+    longBio: "",
+    email: "",
+    showEmail: true,
+    phoneNumber: "",
+    showPhoneNumber: true,
+    location: ""
+  });
+
   return (
     <StyledInfo>
       <Flex flexDirection="column" justifyContent="center" alignItems="center">
@@ -28,36 +42,91 @@ const Info = () => {
           />
         </Container>
         <Box mt={7} className="input-column" width="100%">
-          <Input placeholder="First name" type="text" />
-          <Input placeholder="Last name" type="text" />
+          <Input
+            value={info.firstName}
+            onChange={e => setInfo({ ...info, firstName: e.target.value })}
+            placeholder="First name"
+            type="text"
+          />
+          <Input
+            value={info.lastName}
+            onChange={e => setInfo({ ...info, lastName: e.target.value })}
+            placeholder="Last name"
+            type="text"
+          />
         </Box>
-        <Input width="100%" placeholder="Role" type="text" />
-        <Input width="100%" placeholder="Shortbio" type="text" />
-        <Input width="100%" placeholder="Longbio" type="text" />
+        <Input
+          value={info.role}
+          onChange={e => setInfo({ ...info, role: e.target.value })}
+          width="100%"
+          placeholder="Role"
+          type="text"
+        />
+        <Input
+          value={info.shortBio}
+          onChange={e => setInfo({ ...info, shortBio: e.target.value })}
+          width="100%"
+          placeholder="Shortbio"
+          type="text"
+        />
+        <Input
+          value={info.longBio}
+          onChange={e => setInfo({ ...info, longBio: e.target.value })}
+          width="100%"
+          placeholder="Longbio"
+          type="text"
+        />
         <Box className="checkbox-column" width="100%">
-          <Input placeholder="Email" type="text" />
+          <Input
+            value={info.email}
+            onChange={e => setInfo({ ...info, email: e.target.value })}
+            placeholder="Email"
+            type="text"
+          />
           <Checkbox
             label="Show email"
             value=""
-            checked={true}
-            onChange={() => console.log()}
+            checked={info.showEmail}
+            onChange={() => setInfo({ ...info, showEmail: !info.showEmail })}
           />
         </Box>
         <Box className="checkbox-column" width="100%">
-          <Input placeholder="Phone Number" type="text" />
+          <Input
+            value={info.phoneNumber}
+            onChange={e => setInfo({ ...info, phoneNumber: e.target.value })}
+            placeholder="Phone Number"
+            type="text"
+          />
           <Checkbox
             label="Show number"
             value=""
-            checked={false}
-            onChange={() => console.log()}
+            checked={info.showPhoneNumber}
+            onChange={() =>
+              setInfo({ ...info, showPhoneNumber: !info.showPhoneNumber })
+            }
           />
         </Box>
-        <Input width="100%" placeholder="Location" type="text" />
+        <Input
+          value={info.location}
+          onChange={e => setInfo({ ...info, location: e.target.value })}
+          width="100%"
+          placeholder="Location"
+          type="text"
+        />
         <PrimaryButton>Save basic info</PrimaryButton>
       </Flex>
 
-      <Flex flexDirection="column" justifyContent="center" alignItems="center">
-        Visuals
+      <Flex
+        flexDirection="column"
+        justifyContent="flex-start"
+        alignItems="center"
+      >
+        <FreelancerCard
+          name={`${info.firstName} ${info.lastName}`}
+          role={info.role}
+          shortBio={info.shortBio}
+          photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
+        />
       </Flex>
     </StyledInfo>
   );

@@ -40,6 +40,7 @@ const StyledFreelancerCard = styled(Container)`
   -webkit-box-shadow: ${props => props.theme.shadows.shallow};
   -moz-box-shadow: ${props => props.theme.shadows.shallow};
   border-radius: ${props => props.theme.radii[1]}px;
+  background: ${props => props.theme.colors.white};
   cursor: pointer;
 
   .image-box {

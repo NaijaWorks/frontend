@@ -62,7 +62,6 @@ const Admin: React.FC<AdminProps> = () => {
 };
 
 const StyledAdmin = styled(Container)`
-  border: 1px solid red;
   padding: ${props => props.theme.space[8]}px
     ${props => props.theme.space[11]}px;
 
@@ -74,7 +73,6 @@ const StyledAdmin = styled(Container)`
   .admin-container {
     margin: ${props => props.theme.space[6]}px 0;
   }
-
 
   @media only screen and (max-width: ${props => props.theme.breakpoints[0]}) {
     padding: ${props => props.theme.space[6]}px;
