@@ -1,14 +1,12 @@
 // modules
 import React, { useState } from "react";
 import { RouteComponentProps } from "react-router";
+import { ChevronRight, ChevronLeft } from "react-feather";
 
 // components
 import NavHeader from "../../~reusables/design-system/molecules/NavHeader";
 import { styled } from "../../contexts/ThemeContext";
-import {
-  Container,
-  Box
-} from "../../~reusables/design-system/atoms/Primitives/Primitives";
+import { Box } from "../../~reusables/design-system/atoms/Primitives/Primitives";
 
 // styles
 import { MAX_PAGE_WIDTH } from "../../~reusables/design-system/globals/metrics";
@@ -22,7 +20,8 @@ const projects = [
     title: "Project title 1",
     imageURL:
       "https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg",
-    description: "Project description 1",
+    description:
+      "Project description 1 Project description 1 Project description 1 Project description 1",
     projectURL:
       "https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg",
     userID: "98498"
@@ -35,11 +34,37 @@ const projects = [
     projectURL:
       "https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg",
     userID: "98498"
+  },
+  {
+    title: "Project title 3",
+    imageURL:
+      "https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg",
+    description: "Project description 3",
+    projectURL:
+      "https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg",
+    userID: "98498"
   }
 ];
 
 const Profile: React.FC<ProfileProps> = () => {
   const [projectIndex, setProjectIndex] = useState(0);
+
+  const onClickArrow = (direction: string) => {
+    switch (direction) {
+      case "left":
+        setProjectIndex(
+          projectIndex !== 0 ? projectIndex - 1 : projects.length - 1
+        );
+        break;
+      case "right":
+        setProjectIndex(
+          projectIndex !== projects.length - 1 ? projectIndex + 1 : 0
+        );
+        break;
+      default:
+    }
+  };
+
   return (
     <>
       <NavHeader />
@@ -57,7 +82,18 @@ const Profile: React.FC<ProfileProps> = () => {
               showPhoneNumber={false}
             />
           </Box>
-          <Box>
+          <Box className="middle-box">
+            {projects.length > 1 && (
+              <Box
+                className="left box"
+                bg="white"
+                borderRadius={5}
+                width="24px"
+                onClick={() => onClickArrow("left")}
+              >
+                <ChevronLeft />
+              </Box>
+            )}
             {projects.length > 0 && (
               <ProjectCard
                 title={projects[projectIndex].title}
@@ -66,13 +102,22 @@ const Profile: React.FC<ProfileProps> = () => {
                 projectURL={projects[projectIndex].projectURL}
               />
             )}
+            {projects.length > 1 && (
+              <Box
+                className="right box"
+                bg="white"
+                borderRadius={5}
+                width="24px"
+                onClick={() => onClickArrow("right")}
+              >
+                <ChevronRight />
+              </Box>
+            )}
           </Box>
-          <Box>
-            SKILLS
-          </Box>
+          <Box>SKILLS</Box>
         </div>
       </StyledTopProfile>
-      <StyledBottomProfile></StyledBottomProfile>
+      <StyledBottomProfile>hi</StyledBottomProfile>
     </>
   );
 };
@@ -87,11 +132,43 @@ const StyledTopProfile = styled.div`
   background: ${props => props.theme.colors.background};
   height: 40vh;
 
+  .middle-box {
+    position: relative;
+    height: inherit;
+
+    .box {
+      cursor: pointer;
+      box-shadow: ${props => props.theme.shadows.shallow};
+      -webkit-box-shadow: ${props => props.theme.shadows.shallow};
+      -moz-box-shadow: ${props => props.theme.shadows.shallow};
+
+      &: hover {
+        box-shadow: ${props => props.theme.shadows.deepDark};
+        -webkit-box-shadow: ${props => props.theme.shadows.deepDark};
+        -moz-box-shadow: ${props => props.theme.shadows.deepDark};
+      }
+    }
+
+    .box.left {
+      position: absolute;
+      left: -${props => props.theme.space[6]}px;
+      top: 47%;
+    }
+
+    .box.right {
+      position: absolute;
+      right: -${props => props.theme.space[6]}px;
+      top: 47%;
+    }
+  }
+
   & > div {
     maxwidth: ${MAX_PAGE_WIDTH};
     margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-rows: auto;
+    align-items: start;
     gap: ${props => props.theme.space[9]}px;
   }
 `;
