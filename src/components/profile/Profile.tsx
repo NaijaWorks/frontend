@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { RouteComponentProps } from "react-router";
 import { ChevronRight, ChevronLeft } from "react-feather";
+import GoogleMapReact from "google-map-react";
 
 // components
 import NavHeader from "../../~reusables/design-system/molecules/NavHeader";
@@ -46,7 +47,7 @@ const projects = [
   }
 ];
 
-const Profile: React.FC<ProfileProps> = () => {
+const Profile: React.FC<ProfileProps> = props => {
   const [projectIndex, setProjectIndex] = useState(0);
 
   const onClickArrow = (direction: string) => {
@@ -70,7 +71,7 @@ const Profile: React.FC<ProfileProps> = () => {
       <NavHeader />
       <StyledTopProfile>
         <div>
-          <Box>
+          <Box className="profile-card-container">
             <FreelancerProfileCard
               name="Taiye Adeleke"
               role="Developer"
@@ -117,13 +118,38 @@ const Profile: React.FC<ProfileProps> = () => {
           <Box>SKILLS</Box>
         </div>
       </StyledTopProfile>
-      <StyledBottomProfile>hi</StyledBottomProfile>
+      <StyledBottomProfile>
+        {/* <Map
+          style={{ width: "100%", height: "inherit", position: "static" }}
+          google={props.google}
+          zoom={14}
+        >
+          <Marker
+            title="The title attribute"
+            name="The name attribute"
+            position={{ lat: 37.759703, lng: -122.428093 }}
+          />
+        </Map> */}
+        <GoogleMapReact
+          bootstrapURLKeys={{
+            key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY as string
+          }}
+          defaultCenter={{
+            lat: 59.95,
+            lng: 30.33
+          }}
+          defaultZoom={11}
+        ></GoogleMapReact>
+      </StyledBottomProfile>
     </>
   );
 };
 
 const StyledBottomProfile = styled.div`
   margin: 0 auto;
+  height: 100vh;
+  width: 100%;
+  z-index: -1;
 `;
 
 const StyledTopProfile = styled.div`
@@ -131,6 +157,8 @@ const StyledTopProfile = styled.div`
   padding: 0 ${props => props.theme.space[7]}px;
   background: ${props => props.theme.colors.background};
   height: 40vh;
+  position: absolute;
+  z-index: 1000;
 
   .middle-box {
     position: relative;
@@ -173,4 +201,4 @@ const StyledTopProfile = styled.div`
   }
 `;
 
-export default Profile;
+export default Profile
