@@ -6,6 +6,7 @@ import { Route } from "react-router-dom";
 import Landing from "./components/landing/Landing";
 import Admin from "./components/admin/Admin";
 import Discover from "./components/discover/Discover";
+import Profile from "./components/profile/Profile";
 
 const App: React.FC = () => {
   return (
@@ -16,7 +17,14 @@ const App: React.FC = () => {
         render={routeProps => <Landing {...routeProps} />}
       />
       <Route path="/admin" render={routeProps => <Admin {...routeProps} />} />
-      <Route path="/discover" render={routeProps => <Discover {...routeProps} />} />
+      <Route
+        path="/discover"
+        render={routeProps => <Discover {...routeProps} />}
+      />
+      <Route
+        path="/profile/:id"
+        render={routeProps => <Profile {...routeProps} />}
+      />
     </>
   );
 };
