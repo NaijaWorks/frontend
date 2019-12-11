@@ -18,7 +18,7 @@ import FreelancerProfileCard from "../../~reusables/design-system/molecules/Free
 import { AuthContext } from "../../contexts/AuthContext";
 
 // query
-interface UserInfo {
+export interface UserInfo {
   id: string;
   firstName: string;
   lastName: string;
@@ -33,7 +33,7 @@ interface UserInfo {
   location: string;
 }
 
-const GET_USER_INFO = gql`
+export const GET_USER_INFO = gql`
   query getUserInfo($id: ID!) {
     user(id: $id) {
       id

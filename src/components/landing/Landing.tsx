@@ -1,6 +1,6 @@
 // modules
 import React, { useState, useContext } from "react";
-import { RouteComponentProps } from "react-router";
+import { RouteComponentProps, Redirect } from "react-router";
 import { styled } from "../../contexts/ThemeContext";
 import { gql } from "apollo-boost";
 import { useMutation } from "@apollo/react-hooks";
@@ -72,6 +72,8 @@ const Landing: React.FC<LandingProps> = ({ history }) => {
     }
   };
 
+  if (auth.id) return <Redirect from="/" to="/discover" />;
+
   return (
     <>
       {modal && (
@@ -126,7 +128,9 @@ const Landing: React.FC<LandingProps> = ({ history }) => {
                 <PrimaryButton onClick={() => setModal(true)} mr={7}>
                   Become a freelancer
                 </PrimaryButton>
-                <SecondaryButton>Find talent</SecondaryButton>
+                <SecondaryButton onClick={() => history.push("/discover")}>
+                  Find talent
+                </SecondaryButton>
               </Flex>
             </Box>
             <Box className="profile box-container">
