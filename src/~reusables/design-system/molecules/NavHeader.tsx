@@ -41,7 +41,7 @@ const NavHeader: React.FC = () => {
         <Link to="/">
           <H3 color="lightTitle">NaijaWorks</H3>
         </Link>
-        {auth.userId ? (
+        {auth.id ? (
           <Flex alignItems="center">
             <Box bg="primary" borderRadius={5} p={4} mr={5}>
               <Search width={16} height={16} color="white" />

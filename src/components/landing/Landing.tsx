@@ -1,7 +1,9 @@
 // modules
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { RouteComponentProps } from "react-router";
 import { styled } from "../../contexts/ThemeContext";
+import { gql } from "apollo-boost";
+import { useMutation } from "@apollo/react-hooks";
 
 // components
 import {
@@ -22,41 +24,80 @@ import { Input } from "../../~reusables/design-system/atoms/Input/Input";
 
 // styles
 import { MAX_PAGE_WIDTH } from "../../~reusables/design-system/globals/metrics";
+import { User } from "../../~reusables/schema/User";
+import { AuthContext } from "../../contexts/AuthContext";
 
 interface LandingProps extends RouteComponentProps {}
 
 // mutation
+const REGISTER = gql`
+  mutation register($email: String!, $password: String!) {
+    register(email: $email, password: $password) {
+      id
+      firstName
+      lastName
+      email
+      photoURL
+      token
+    }
+  }
+`;
 
-
-
-const Landing: React.FC<LandingProps> = () => {
+const Landing: React.FC<LandingProps> = ({history}) => {
   const [modal, setModal] = useState(false);
   const [form, setForm] = useState({
     email: "",
     password: ""
   });
+  const auth = useContext(AuthContext);
+
+  const [register, { data, loading, error }] = useMutation<
+    { register: User },
+    { email: string; password: string }
+  >(REGISTER, {
+    variables: { email: form.email, password: form.password },
+    update(cache, { data }) {
+      if (data) {
+        auth.setAuth(data.register);
+        history.push("/admin")
+      }
+    }
+  });
+
+  const onFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      await register();
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <>
       {modal && (
         <PopupModal title="Create a new account" setModal={setModal}>
-          <Input
-            value={form.email}
-            onChange={e => setForm({ ...form, email: form.email })}
-            width="100%"
-            placeholder="Email address"
-            type="text"
-          />
-          <Input
-            value={form.password}
-            onChange={e => setForm({ ...form, password: form.password })}
-            width="100%"
-            placeholder="Password"
-            type="password"
-          />
-          <Flex justifyContent="flex-end">
-            <PrimaryButton>Sign up</PrimaryButton>
-          </Flex>
+          <form onSubmit={onFormSubmit}>
+            <Input
+              value={form.email}
+              onChange={e => setForm({ ...form, email: e.target.value })}
+              width="100%"
+              placeholder="Email address"
+              type="text"
+              required
+            />
+            <Input
+              value={form.password}
+              onChange={e => setForm({ ...form, password: e.target.value })}
+              width="100%"
+              placeholder="Password"
+              type="password"
+              required
+            />
+            <Flex justifyContent="flex-end">
+              <PrimaryButton>Sign up</PrimaryButton>
+            </Flex>
+          </form>
         </PopupModal>
       )}
       <NavHeader />
