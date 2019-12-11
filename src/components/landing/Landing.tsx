@@ -24,8 +24,7 @@ import { Input } from "../../~reusables/design-system/atoms/Input/Input";
 
 // styles
 import { MAX_PAGE_WIDTH } from "../../~reusables/design-system/globals/metrics";
-import { User } from "../../~reusables/schema/User";
-import { AuthContext } from "../../contexts/AuthContext";
+import { AuthContext, AuthData } from "../../contexts/AuthContext";
 
 interface LandingProps extends RouteComponentProps {}
 
@@ -43,7 +42,7 @@ const REGISTER = gql`
   }
 `;
 
-const Landing: React.FC<LandingProps> = ({history}) => {
+const Landing: React.FC<LandingProps> = ({ history }) => {
   const [modal, setModal] = useState(false);
   const [form, setForm] = useState({
     email: "",
@@ -51,15 +50,15 @@ const Landing: React.FC<LandingProps> = ({history}) => {
   });
   const auth = useContext(AuthContext);
 
-  const [register, { data, loading, error }] = useMutation<
-    { register: User },
+  const [register] = useMutation<
+    { register: AuthData },
     { email: string; password: string }
   >(REGISTER, {
     variables: { email: form.email, password: form.password },
     update(cache, { data }) {
       if (data) {
         auth.setAuth(data.register);
-        history.push("/admin")
+        history.push("/admin");
       }
     }
   });

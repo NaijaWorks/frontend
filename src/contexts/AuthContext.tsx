@@ -1,7 +1,7 @@
 // modules
 import React, { createContext, useState } from "react";
 
-interface AuthData {
+export interface AuthData {
   id: string | null;
   firstName: string | null;
   lastName: string | null;
