@@ -25,15 +25,35 @@ import { MAX_PAGE_WIDTH } from "../../~reusables/design-system/globals/metrics";
 
 interface LandingProps extends RouteComponentProps {}
 
+// mutation
+
+
+
 const Landing: React.FC<LandingProps> = () => {
   const [modal, setModal] = useState(false);
+  const [form, setForm] = useState({
+    email: "",
+    password: ""
+  });
 
   return (
     <>
       {modal && (
         <PopupModal title="Create a new account" setModal={setModal}>
-          <Input width="100%" placeholder="Email address" type="text" />
-          <Input width="100%" placeholder="Password" type="password" />
+          <Input
+            value={form.email}
+            onChange={e => setForm({ ...form, email: form.email })}
+            width="100%"
+            placeholder="Email address"
+            type="text"
+          />
+          <Input
+            value={form.password}
+            onChange={e => setForm({ ...form, password: form.password })}
+            width="100%"
+            placeholder="Password"
+            type="password"
+          />
           <Flex justifyContent="flex-end">
             <PrimaryButton>Sign up</PrimaryButton>
           </Flex>
