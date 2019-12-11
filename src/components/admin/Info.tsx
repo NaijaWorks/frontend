@@ -1,5 +1,7 @@
 // modules
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { useQuery, useMutation } from "@apollo/react-hooks";
+import { gql } from "apollo-boost";
 
 // components
 import { styled } from "../../contexts/ThemeContext";
@@ -13,8 +15,89 @@ import { PrimaryButton } from "../../~reusables/design-system/atoms/Button/Butto
 import Checkbox from "../../~reusables/design-system/atoms/Checkbox/Checkbox";
 import FreelancerCard from "../../~reusables/design-system/molecules/FreelancerCard";
 import FreelancerProfileCard from "../../~reusables/design-system/molecules/FreelancerProfileCard";
+import { AuthContext } from "../../contexts/AuthContext";
+
+// query
+interface UserInfo {
+  id: string;
+  firstName: string;
+  lastName: string;
+  photoURL: string;
+  role: string;
+  shortBio: string;
+  longBio: string;
+  email: string;
+  showEmail: boolean;
+  phone: string;
+  showPhone: boolean;
+  location: string;
+}
+
+const GET_USER_INFO = gql`
+  query getUserInfo($id: ID!) {
+    user(id: $id) {
+      id
+      firstName
+      lastName
+      photoURL
+      role
+      shortBio
+      longBio
+      email
+      showEmail
+      phone
+      showPhone
+      location
+    }
+  }
+`;
+
+// mutation
+const UPDATE_USER_INFO = gql`
+  mutation(
+    $id: ID
+    $firstName: String
+    $lastName: String
+    $photoURL: String
+    $showEmail: Boolean
+    $phone: String
+    $showPhone: Boolean
+    $location: String
+    $role: String
+    $shortBio: String
+    $longBio: String
+  ) {
+    updateUser(
+      id: $id
+      firstName: $firstName
+      lastName: $lastName
+      photoURL: $photoURL
+      showEmail: $showEmail
+      phone: $phone
+      showPhone: $showPhone
+      location: $location
+      role: $role
+      shortBio: $shortBio
+      longBio: $longBio
+    ) {
+      id
+      firstName
+      lastName
+      photoURL
+      role
+      shortBio
+      longBio
+      email
+      showEmail
+      phone
+      showPhone
+      location
+    }
+  }
+`;
 
 const Info = () => {
+  const auth = useContext(AuthContext);
   const [info, setInfo] = useState({
     photoURL: "",
     firstName: "",
@@ -24,10 +107,32 @@ const Info = () => {
     longBio: "",
     email: "",
     showEmail: true,
-    phoneNumber: "",
-    showPhoneNumber: true,
+    phone: "",
+    showPhone: true,
     location: ""
   });
+
+  const { data } = useQuery<{ user: UserInfo }, { id: string }>(GET_USER_INFO, {
+    variables: { id: auth.id ? auth.id : "" }
+  });
+
+  const [updateUserInfo] = useMutation<{ updateUser: UserInfo }, UserInfo>(
+    UPDATE_USER_INFO,
+    {
+      variables: {
+        id: auth.id || "",
+        ...info
+      }
+    }
+  );
+
+  useEffect(() => {
+    if (data && data.user) setInfo(data.user);
+  }, [data]);
+
+  const onClickUpdate = () => {
+    updateUserInfo()
+  }
 
   return (
     <StyledInfo>
@@ -45,34 +150,34 @@ const Info = () => {
         </Container>
         <Box mt={7} className="input-column" width="100%">
           <Input
-            value={info.firstName}
+            value={info.firstName || ""}
             onChange={e => setInfo({ ...info, firstName: e.target.value })}
             placeholder="First name"
             type="text"
           />
           <Input
-            value={info.lastName}
+            value={info.lastName || ""}
             onChange={e => setInfo({ ...info, lastName: e.target.value })}
             placeholder="Last name"
             type="text"
           />
         </Box>
         <Input
-          value={info.role}
+          value={info.role || ""}
           onChange={e => setInfo({ ...info, role: e.target.value })}
           width="100%"
           placeholder="Role"
           type="text"
         />
         <Input
-          value={info.shortBio}
+          value={info.shortBio || ""}
           onChange={e => setInfo({ ...info, shortBio: e.target.value })}
           width="100%"
           placeholder="Shortbio"
           type="text"
         />
         <Input
-          value={info.longBio}
+          value={info.longBio || ""}
           onChange={e => setInfo({ ...info, longBio: e.target.value })}
           width="100%"
           placeholder="Longbio"
@@ -80,42 +185,45 @@ const Info = () => {
         />
         <Box className="checkbox-column" width="100%">
           <Input
-            value={info.email}
+            value={info.email || ""}
             onChange={e => setInfo({ ...info, email: e.target.value })}
+            disabled
             placeholder="Email"
             type="text"
           />
           <Checkbox
             label="Show email"
             value=""
-            checked={info.showEmail}
+            checked={
+              typeof info.showEmail === "boolean" ? info.showEmail : false
+            }
             onChange={() => setInfo({ ...info, showEmail: !info.showEmail })}
           />
         </Box>
         <Box className="checkbox-column" width="100%">
           <Input
-            value={info.phoneNumber}
-            onChange={e => setInfo({ ...info, phoneNumber: e.target.value })}
+            value={info.phone || ""}
+            onChange={e => setInfo({ ...info, phone: e.target.value })}
             placeholder="Phone Number"
             type="text"
           />
           <Checkbox
             label="Show number"
             value=""
-            checked={info.showPhoneNumber}
-            onChange={() =>
-              setInfo({ ...info, showPhoneNumber: !info.showPhoneNumber })
+            checked={
+              typeof info.showPhone === "boolean" ? info.showPhone : false
             }
+            onChange={() => setInfo({ ...info, showPhone: !info.showPhone })}
           />
         </Box>
         <Input
-          value={info.location}
+          value={info.location || ""}
           onChange={e => setInfo({ ...info, location: e.target.value })}
           width="100%"
           placeholder="Location"
           type="text"
         />
-        <PrimaryButton>Save basic info</PrimaryButton>
+        <PrimaryButton onClick={() => onClickUpdate()}>Update info</PrimaryButton>
       </Flex>
 
       <Flex
@@ -124,21 +232,21 @@ const Info = () => {
         alignItems="center"
       >
         <FreelancerCard
-          name={`${info.firstName} ${info.lastName}`}
+          name={`${info.firstName || ""} ${info.lastName || ""}`}
           role={info.role}
           shortBio={info.shortBio}
           photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
         />
         <Box p={7} />
         <FreelancerProfileCard
-          name={`${info.firstName} ${info.lastName}`}
+          name={`${info.firstName || ""} ${info.lastName || ""}`}
           role={info.role}
           longBio={info.longBio}
           photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
           email={info.email}
           showEmail={info.showEmail}
-          phoneNumber={info.phoneNumber}
-          showPhoneNumber={info.showPhoneNumber}
+          phoneNumber={info.phone}
+          showPhoneNumber={info.showPhone}
         />
       </Flex>
     </StyledInfo>

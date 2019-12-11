@@ -1,11 +1,13 @@
 // modules
 import React, { createContext, useState } from "react";
 
-interface AuthData {
-  userId: string | null;
+export interface AuthData {
+  id: string | null;
   firstName: string | null;
   lastName: string | null;
+  email: string | null;
   photoURL: string | null;
+  token: string | null;
 }
 
 interface AuthMethods {
@@ -13,10 +15,12 @@ interface AuthMethods {
 }
 
 export const AuthContext = createContext<AuthData & AuthMethods>({
-  userId: null,
+  id: null,
   firstName: null,
   lastName: null,
+  email: null,
   photoURL: null,
+  token: null,
   setAuth: () => {}
 });
 
