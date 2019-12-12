@@ -37,7 +37,6 @@ interface DiscoverProps extends RouteComponentProps {}
 
 const Discover: React.FC<DiscoverProps> = () => {
   const { data } = useQuery<{ users: UserCards[] }>(GET_USER_CARDS);
-  console.log(data)
 
   return (
     <>

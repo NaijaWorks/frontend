@@ -33,14 +33,14 @@ const FreelancerProfileCard: React.FC<CardProps> = ({
       <Box className="image-box" height="270px" width="100%">
         <img src={photoURL} alt={`${name}'s profile`} />
       </Box>
-      <Box p={7}>
+      <Box pt={7} px={7}>
         <H4>{name}</H4>
         <P2 py={3} color="primary">
           {role}
         </P2>
         <P2 my={6}>{longBio}</P2>
         {(showEmail || showPhone) && (
-          <Flex justifyContent="flex-end">
+          <Flex justifyContent="flex-end" flexWrap="wrap">
             {showEmail && email && (
               <SecondaryButton className="contact-btn">{email}</SecondaryButton>
             )}
@@ -88,6 +88,7 @@ const StyledProfileCard = styled(Container)`
     -moz-box-shadow: none;
     border: 1px solid ${props => props.theme.colors.primary}
     margin-left: ${props => props.theme.space[6]}px;
+    margin-bottom: ${props => props.theme.space[7]}px;
   }
 `;
 
