@@ -131,8 +131,8 @@ const Info = () => {
   }, [data]);
 
   const onClickUpdate = () => {
-    updateUserInfo()
-  }
+    updateUserInfo();
+  };
 
   return (
     <StyledInfo>
@@ -223,7 +223,9 @@ const Info = () => {
           placeholder="Location"
           type="text"
         />
-        <PrimaryButton onClick={() => onClickUpdate()}>Update info</PrimaryButton>
+        <PrimaryButton onClick={() => onClickUpdate()}>
+          Update info
+        </PrimaryButton>
       </Flex>
 
       <Flex
@@ -232,6 +234,7 @@ const Info = () => {
         alignItems="center"
       >
         <FreelancerCard
+          id={auth.id || ""}
           name={`${info.firstName || ""} ${info.lastName || ""}`}
           role={info.role}
           shortBio={info.shortBio}
@@ -245,8 +248,8 @@ const Info = () => {
           photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
           email={info.email}
           showEmail={info.showEmail}
-          phoneNumber={info.phone}
-          showPhoneNumber={info.showPhone}
+          phone={info.phone}
+          showPhone={info.showPhone}
         />
       </Flex>
     </StyledInfo>

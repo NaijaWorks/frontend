@@ -1,5 +1,6 @@
 // modules
 import React from "react";
+import { Link } from "react-router-dom";
 
 // components
 import { styled } from "../../../contexts/ThemeContext";
@@ -7,6 +8,7 @@ import { Container, Box } from "../atoms/Primitives/Primitives";
 import { H5, P3, P2 } from "../atoms/Text/Text";
 
 interface CardProps {
+  id: string;
   name: string;
   role: string;
   shortBio: string;
@@ -14,13 +16,14 @@ interface CardProps {
 }
 
 const FreelancerCard: React.FC<CardProps> = ({
+  id,
   name,
   role,
   shortBio,
   photoURL
 }) => {
   return (
-    <StyledFreelancerCard>
+    <StyledFreelancerCard to={`profile/${id}`}>
       <Box width="70%" p={6}>
         <H5>{name}</H5>
         <P3 py={2} color="primary">
@@ -35,7 +38,8 @@ const FreelancerCard: React.FC<CardProps> = ({
   );
 };
 
-const StyledFreelancerCard = styled(Container)`
+const StyledFreelancerCard = styled(Link)`
+  display: flex;
   box-shadow: ${props => props.theme.shadows.shallow};
   -webkit-box-shadow: ${props => props.theme.shadows.shallow};
   -moz-box-shadow: ${props => props.theme.shadows.shallow};

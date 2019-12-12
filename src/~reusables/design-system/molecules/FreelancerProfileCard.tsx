@@ -5,7 +5,7 @@ import React from "react";
 import { styled } from "../../../contexts/ThemeContext";
 import { Container, Box, Flex } from "../atoms/Primitives/Primitives";
 import { H4, P2 } from "../atoms/Text/Text";
-import { PrimaryButton } from "../atoms/Button/Button";
+import { SecondaryButton } from "../atoms/Button/Button";
 
 interface CardProps {
   name: string;
@@ -14,8 +14,8 @@ interface CardProps {
   photoURL: string;
   email: string;
   showEmail: boolean;
-  phoneNumber: string;
-  showPhoneNumber: boolean;
+  phone: string;
+  showPhone: boolean;
 }
 
 const FreelancerProfileCard: React.FC<CardProps> = ({
@@ -25,23 +25,28 @@ const FreelancerProfileCard: React.FC<CardProps> = ({
   photoURL,
   email,
   showEmail,
-  phoneNumber,
-  showPhoneNumber
+  phone,
+  showPhone
 }) => {
   return (
     <StyledProfileCard flexDirection="column">
       <Box className="image-box" height="270px" width="100%">
         <img src={photoURL} alt={`${name}'s profile`} />
       </Box>
-      <Box p={7}>
+      <Box pt={7} px={7}>
         <H4>{name}</H4>
         <P2 py={3} color="primary">
           {role}
         </P2>
         <P2 my={6}>{longBio}</P2>
-        {(showEmail || showPhoneNumber) && (
-          <Flex justifyContent="flex-end">
-            <PrimaryButton className="contact-btn">Contact</PrimaryButton>
+        {(showEmail || showPhone) && (
+          <Flex justifyContent="flex-end" flexWrap="wrap">
+            {showEmail && email && (
+              <SecondaryButton className="contact-btn">{email}</SecondaryButton>
+            )}
+            {showPhone && phone && (
+              <SecondaryButton className="contact-btn">{phone}</SecondaryButton>
+            )}
           </Flex>
         )}
       </Box>
@@ -81,6 +86,9 @@ const StyledProfileCard = styled(Container)`
     box-shadow: none;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
+    border: 1px solid ${props => props.theme.colors.primary}
+    margin-left: ${props => props.theme.space[6]}px;
+    margin-bottom: ${props => props.theme.space[7]}px;
   }
 `;
 

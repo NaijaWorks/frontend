@@ -7,6 +7,7 @@ import Landing from "./components/landing/Landing";
 import Admin from "./components/admin/Admin";
 import Discover from "./components/discover/Discover";
 import Profile from "./components/profile/Profile";
+import { ProtectedRoute } from "./~reusables/design-system/molecules/ProtectedRoute";
 
 const App: React.FC = () => {
   return (
@@ -16,7 +17,7 @@ const App: React.FC = () => {
         path="/"
         render={routeProps => <Landing {...routeProps} />}
       />
-      <Route path="/admin" render={routeProps => <Admin {...routeProps} />} />
+      <ProtectedRoute component={Admin} path="/admin" />
       <Route
         path="/discover"
         render={routeProps => <Discover {...routeProps} />}

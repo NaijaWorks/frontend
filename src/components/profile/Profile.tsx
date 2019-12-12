@@ -79,8 +79,8 @@ const Profile: React.FC<ProfileProps> = props => {
               photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
               email="isaacaderogba1@gmail.com"
               showEmail={true}
-              phoneNumber="0861241218"
-              showPhoneNumber={false}
+              phone="0861241218"
+              showPhone={false}
             />
           </Box>
           <Box className="middle-box">

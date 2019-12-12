@@ -1,5 +1,7 @@
 // modules
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { gql } from "apollo-boost";
+import { useMutation, useQuery } from "@apollo/react-hooks";
 
 // components
 import { styled } from "../../contexts/ThemeContext";
@@ -16,42 +18,95 @@ import {
   SecondaryButton
 } from "../../~reusables/design-system/atoms/Button/Button";
 import ProjectCard from "../../~reusables/design-system/molecules/ProjectCard";
-
-const projects = [
-  {
-    title: "Project title 1",
-    imageURL:
-      "https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg",
-    description: "Project description 1",
-    projectURL:
-      "https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg",
-    userID: "98498"
-  },
-  {
-    title: "Project title 2",
-    imageURL:
-      "https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg",
-    description: "Project description 2",
-    projectURL:
-      "https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg",
-    userID: "98498"
-  }
-];
+import { AuthContext } from "../../contexts/AuthContext";
 
 const initialProjectState = {
+  id: "",
   title: "",
   imageURL: "",
   description: "",
-  projectURL: "",
-  userID: ""
+  projectURL: ""
 };
 
+interface ProjectData {
+  id: string;
+  title: string;
+  imageURL: string | null;
+  description: string;
+  projectURL: string | null;
+}
+
+// mutation
+const ADD_PROJECT = gql`
+  mutation addProject(
+    $title: String!
+    $imageURL: String
+    $description: String!
+    $projectURL: String
+    $userId: ID!
+  ) {
+    addProject(
+      title: $title
+      imageURL: $imageURL
+      description: $description
+      projectURL: $projectURL
+      userId: $userId
+    ) {
+      id
+      title
+      imageURL
+      description
+      projectURL
+    }
+  }
+`;
+
+// query
+const PROJECTS = gql`
+  query projects($id: ID!) {
+    user(id: $id) {
+      id
+      projects {
+        id
+        title
+        imageURL
+        description
+        projectURL
+      }
+    }
+  }
+`;
+
 const Projects = () => {
-  const [project, setProject] = useState(initialProjectState);
+  const [project, setProject] = useState<ProjectData>(initialProjectState);
+  const auth = useContext(AuthContext);
+  const [addProject] = useMutation<{ addProject: ProjectData }>(ADD_PROJECT, {
+    variables: { ...project, userId: auth.id ? auth.id : "" }
+  });
+
+  const { data } = useQuery<
+    { user: { projects: ProjectData[] } },
+    { id: string }
+  >(PROJECTS, {
+    variables: { id: auth.id ? auth.id : "" }
+  });
+
+  const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // call add project or update project, catching both errors if needs be
+    try {
+      if (project.id) {
+      } else {
+        addProject();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <StyledProjects>
-      <Flex flexDirection="column" justifyContent="center" alignItems="center">
+      <form onSubmit={onFormSubmit}>
         <Container
           boxShadow="deep"
           borderRadius={2}
@@ -70,6 +125,7 @@ const Projects = () => {
           placeholder="Title"
           type="text"
           width="100%"
+          required
         />
         <Input
           value={project.description}
@@ -79,32 +135,35 @@ const Projects = () => {
           placeholder="Description"
           type="text"
           width="100%"
+          required
         />
         <Input
-          value={project.projectURL}
+          value={project.projectURL || ""}
           onChange={e => setProject({ ...project, projectURL: e.target.value })}
           placeholder="Project URL"
           type="text"
           width="100%"
         />
         <Flex justifyContent="space-evenly" width="100%">
-          {project.userID && <TextButton>Delete project</TextButton>}
+          {project.id && <TextButton>Delete project</TextButton>}
           <PrimaryButton className="primary-btn">
-            {project.userID ? "Update project" : "Save project"}
+            {project.id ? "Update project" : "Save project"}
           </PrimaryButton>
         </Flex>
-      </Flex>
+      </form>
       <Flex
         flexDirection="column"
         justifyContent="flex-start"
         alignItems="center"
       >
         <ol>
-          {projects.map(project => (
-            <li key={project.title} onClick={() => setProject(project)}>
-              <H4 color="text">{project.title}</H4>
-            </li>
-          ))}
+          {data &&
+            data.user &&
+            data.user.projects.map(project => (
+              <li key={project.id} onClick={() => setProject(project)}>
+                <H4 color="text">{project.title}</H4>
+              </li>
+            ))}
         </ol>
         <SecondaryButton onClick={() => setProject(initialProjectState)}>
           Add new project
@@ -113,9 +172,9 @@ const Projects = () => {
         {project.title && (
           <ProjectCard
             title={project.title}
-            imageURL={project.imageURL}
+            imageURL={project.imageURL || ""}
             description={project.description}
-            projectURL={project.projectURL}
+            projectURL={project.projectURL || ""}
           />
         )}
       </Flex>
@@ -127,6 +186,13 @@ const StyledProjects = styled.section`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: ${props => props.theme.space[7]}px;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 
   .primary-btn {
     align-self: flex-end;

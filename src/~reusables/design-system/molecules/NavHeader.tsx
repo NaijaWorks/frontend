@@ -61,7 +61,6 @@ const NavHeader: React.FC<OwnProps> = ({ history }) => {
 
   const onClickLogout = () => {
     localStorage.clear();
-    history.push("/");
     window.location.reload();
   };
 
