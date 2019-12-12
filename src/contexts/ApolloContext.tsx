@@ -3,7 +3,7 @@ import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
 
 const client = new ApolloClient({
-  uri: process.env.REACT_APP_API_URL
+  uri: `${process.env.REACT_APP_API_URL}/graphql`
 });
 
 const ApolloContextProvider: React.FC = props => (
