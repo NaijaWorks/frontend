@@ -141,36 +141,42 @@ const Landing: React.FC<LandingProps> = ({ history }) => {
       </StyledTopLanding>
       <StyledBottomLanding>
         <FreelancerCard
+          id="100000000"
           name="Firstname, lastname"
           role="role"
           shortBio="short one line bio"
           photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
         />
         <FreelancerCard
+          id="100000001"
           name="Firstname, lastname"
           role="role"
           shortBio="short one line bio"
           photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
         />
         <FreelancerCard
+          id="100000002"
           name="Firstname, lastname"
           role="role"
           shortBio="short one line bio"
           photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
         />
         <FreelancerCard
+          id="100000003"
           name="Firstname, lastname"
           role="role"
           shortBio="short one line bio"
           photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
         />
         <FreelancerCard
+          id="100000004"
           name="Firstname, lastname"
           role="role"
           shortBio="short one line bio"
           photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
         />
         <FreelancerCard
+          id="100000005"
           name="Firstname, lastname"
           role="role"
           shortBio="short one line bio"

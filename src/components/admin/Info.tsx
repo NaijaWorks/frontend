@@ -131,8 +131,8 @@ const Info = () => {
   }, [data]);
 
   const onClickUpdate = () => {
-    updateUserInfo()
-  }
+    updateUserInfo();
+  };
 
   return (
     <StyledInfo>
@@ -223,7 +223,9 @@ const Info = () => {
           placeholder="Location"
           type="text"
         />
-        <PrimaryButton onClick={() => onClickUpdate()}>Update info</PrimaryButton>
+        <PrimaryButton onClick={() => onClickUpdate()}>
+          Update info
+        </PrimaryButton>
       </Flex>
 
       <Flex
@@ -232,6 +234,7 @@ const Info = () => {
         alignItems="center"
       >
         <FreelancerCard
+          id={auth.id || ""}
           name={`${info.firstName || ""} ${info.lastName || ""}`}
           role={info.role}
           shortBio={info.shortBio}

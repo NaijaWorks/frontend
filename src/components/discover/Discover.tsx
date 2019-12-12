@@ -1,6 +1,8 @@
 // modules
 import React from "react";
 import { RouteComponentProps } from "react-router";
+import { useQuery } from "@apollo/react-hooks";
+import { gql } from "apollo-boost";
 
 // components
 import { Container } from "../../~reusables/design-system/atoms/Primitives/Primitives";
@@ -9,151 +11,52 @@ import { styled } from "../../contexts/ThemeContext";
 import { MAX_PAGE_WIDTH } from "../../~reusables/design-system/globals/metrics";
 import FreelancerCard from "../../~reusables/design-system/molecules/FreelancerCard";
 
+interface UserCards {
+  id: string;
+  firstName: string;
+  lastName: string;
+  photoURL: string;
+  role: string;
+  shortBio: string;
+}
+
+const GET_USER_CARDS = gql`
+  query getUserCards {
+    users {
+      id
+      firstName
+      lastName
+      photoURL
+      role
+      shortBio
+    }
+  }
+`;
+
 interface DiscoverProps extends RouteComponentProps {}
 
-const discoverData = [
-  {
-    name: "Firstname, Lastname",
-    role: "Role",
-    shortBio: "Short one-line bio",
-    photoURL:
-      "https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
-  },
-  {
-    name: "Firstname, Lastname",
-    role: "Role",
-    shortBio: "Short one-line bio",
-    photoURL:
-      "https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
-  },
-  {
-    name: "Firstname, Lastname",
-    role: "Role",
-    shortBio: "Short one-line bio",
-    photoURL:
-      "https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
-  },
-  {
-    name: "Firstname, Lastname",
-    role: "Role",
-    shortBio: "Short one-line bio",
-    photoURL:
-      "https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
-  },
-  {
-    name: "Firstname, Lastname",
-    role: "Role",
-    shortBio: "Short one-line bio",
-    photoURL:
-      "https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
-  },
-  {
-    name: "Firstname, Lastname",
-    role: "Role",
-    shortBio: "Short one-line bio",
-    photoURL:
-      "https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
-  },
-  {
-    name: "Firstname, Lastname",
-    role: "Role",
-    shortBio: "Short one-line bio",
-    photoURL:
-      "https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
-  },
-  {
-    name: "Firstname, Lastname",
-    role: "Role",
-    shortBio: "Short one-line bio",
-    photoURL:
-      "https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
-  },
-  {
-    name: "Firstname, Lastname",
-    role: "Role",
-    shortBio: "Short one-line bio",
-    photoURL:
-      "https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
-  },
-  {
-    name: "Firstname, Lastname",
-    role: "Role",
-    shortBio: "Short one-line bio",
-    photoURL:
-      "https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
-  },
-  {
-    name: "Firstname, Lastname",
-    role: "Role",
-    shortBio: "Short one-line bio",
-    photoURL:
-      "https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
-  },
-  {
-    name: "Firstname, Lastname",
-    role: "Role",
-    shortBio: "Short one-line bio",
-    photoURL:
-      "https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
-  },
-  {
-    name: "Firstname, Lastname",
-    role: "Role",
-    shortBio: "Short one-line bio",
-    photoURL:
-      "https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
-  },
-  {
-    name: "Firstname, Lastname",
-    role: "Role",
-    shortBio: "Short one-line bio",
-    photoURL:
-      "https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
-  },
-  {
-    name: "Firstname, Lastname",
-    role: "Role",
-    shortBio: "Short one-line bio",
-    photoURL:
-      "https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
-  },
-  {
-    name: "Firstname, Lastname",
-    role: "Role",
-    shortBio: "Short one-line bio",
-    photoURL:
-      "https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
-  },
-  {
-    name: "Firstname, Lastname",
-    role: "Role",
-    shortBio: "Short one-line bio",
-    photoURL:
-      "https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
-  },
-  {
-    name: "Firstname, Lastname",
-    role: "Role",
-    shortBio: "Short one-line bio",
-    photoURL:
-      "https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
-  }
-];
-
 const Discover: React.FC<DiscoverProps> = () => {
+  const { data } = useQuery<{ users: UserCards[] }>(GET_USER_CARDS);
+  console.log(data)
+
   return (
     <>
       <NavHeader />
       <StyledDiscover>
-        {discoverData.map(({ name, role, shortBio, photoURL }) => (
-          <FreelancerCard
-            key={name}
-            name={name}
-            role={role}
-            shortBio={shortBio}
-            photoURL={photoURL}
-          />
-        ))}
+        {data &&
+          data.users.map(
+            ({ id, firstName, lastName, role, shortBio, photoURL }) =>
+              firstName && lastName && role ? (
+                <FreelancerCard
+                  id={id}
+                  key={id}
+                  name={`${firstName || ""} ${lastName || ""}`}
+                  role={role}
+                  shortBio={shortBio}
+                  photoURL={photoURL || "https://via.placeholder.com/150"}
+                />
+              ) : null
+          )}
       </StyledDiscover>
     </>
   );
