@@ -248,8 +248,8 @@ const Info = () => {
           photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
           email={info.email}
           showEmail={info.showEmail}
-          phoneNumber={info.phone}
-          showPhoneNumber={info.showPhone}
+          phone={info.phone}
+          showPhone={info.showPhone}
         />
       </Flex>
     </StyledInfo>
