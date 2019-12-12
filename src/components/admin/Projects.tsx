@@ -1,5 +1,7 @@
 // modules
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { gql } from "apollo-boost";
+import { useMutation } from "@apollo/react-hooks";
 
 // components
 import { styled } from "../../contexts/ThemeContext";
@@ -16,6 +18,7 @@ import {
   SecondaryButton
 } from "../../~reusables/design-system/atoms/Button/Button";
 import ProjectCard from "../../~reusables/design-system/molecules/ProjectCard";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const projects = [
   {
@@ -46,12 +49,55 @@ const initialProjectState = {
   userID: ""
 };
 
+interface ProjectData {
+  id: string;
+  title: string;
+  imageURL: string | null;
+  description: string;
+  projectURL: string | null;
+}
+
+// mutation
+const ADD_PROJECT = gql`
+  mutation addProject(
+    $title: String!
+    $imageURL: String
+    $description: String!
+    $projectURL: String
+    $userId: ID!
+  ) {
+    addProject(
+      title: $title
+      imageURL: $imageURL
+      description: $description
+      projectURL: $projectURL
+      userId: $userId
+    ) {
+      id
+      title
+      imageURL
+      description
+      projectURL
+    }
+  }
+`;
+
+// query
+
 const Projects = () => {
   const [project, setProject] = useState(initialProjectState);
+  const auth = useContext(AuthContext);
+  const [addProject] = useMutation<{ addProject: ProjectData }>(ADD_PROJECT, {
+    variables: { ...project, id: auth.id ? auth.id : "" }
+  });
+
+  const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    // call add project or update project, catching both errors if needs be
+  };
 
   return (
     <StyledProjects>
-      <Flex flexDirection="column" justifyContent="center" alignItems="center">
+      <form onSubmit={onFormSubmit}>
         <Container
           boxShadow="deep"
           borderRadius={2}
@@ -93,7 +139,7 @@ const Projects = () => {
             {project.userID ? "Update project" : "Save project"}
           </PrimaryButton>
         </Flex>
-      </Flex>
+      </form>
       <Flex
         flexDirection="column"
         justifyContent="flex-start"
@@ -127,6 +173,13 @@ const StyledProjects = styled.section`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: ${props => props.theme.space[7]}px;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 
   .primary-btn {
     align-self: flex-end;
