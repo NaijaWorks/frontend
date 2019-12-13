@@ -23,12 +23,12 @@ import { AuthContext } from "../../contexts/AuthContext";
 const initialProjectState = {
   id: "",
   title: "",
-  imageURL: "",
+  imageURL: "https://via.placeholder.com/600",
   description: "",
   projectURL: ""
 };
 
-interface ProjectData {
+export interface ProjectData {
   id: string;
   title: string;
   imageURL: string | null;
@@ -84,20 +84,21 @@ const Projects = () => {
     variables: { ...project, userId: auth.id ? auth.id : "" }
   });
 
-  const { data } = useQuery<
+  const { data, refetch } = useQuery<
     { user: { projects: ProjectData[] } },
     { id: string }
   >(PROJECTS, {
     variables: { id: auth.id ? auth.id : "" }
   });
 
-  const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // call add project or update project, catching both errors if needs be
     try {
       if (project.id) {
       } else {
-        addProject();
+        await addProject();
+        refetch();
       }
     } catch (err) {
       console.log(err);
@@ -115,7 +116,7 @@ const Projects = () => {
           mb={7}
         >
           <img
-            src="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
+            src="https://via.placeholder.com/600"
             alt={`Names's profile`}
           />
         </Container>

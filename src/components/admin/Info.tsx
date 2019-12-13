@@ -55,7 +55,7 @@ export const GET_USER_INFO = gql`
 // mutation
 const UPDATE_USER_INFO = gql`
   mutation(
-    $id: ID
+    $id: ID!
     $firstName: String
     $lastName: String
     $photoURL: String
@@ -99,7 +99,7 @@ const UPDATE_USER_INFO = gql`
 const Info = () => {
   const auth = useContext(AuthContext);
   const [info, setInfo] = useState({
-    photoURL: "",
+    photoURL: "https://via.placeholder.com/600",
     firstName: "",
     lastName: "",
     role: "",
@@ -120,8 +120,9 @@ const Info = () => {
     UPDATE_USER_INFO,
     {
       variables: {
+        ...info,
         id: auth.id || "",
-        ...info
+        photoURL: "https://via.placeholder.com/600"
       }
     }
   );
@@ -131,7 +132,11 @@ const Info = () => {
   }, [data]);
 
   const onClickUpdate = () => {
-    updateUserInfo();
+    try {
+      updateUserInfo();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -143,10 +148,7 @@ const Info = () => {
           width="120px"
           height="120px"
         >
-          <img
-            src="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
-            alt={`Names's profile`}
-          />
+          <img src="https://via.placeholder.com/600" alt={`Names's profile`} />
         </Container>
         <Box mt={7} className="input-column" width="100%">
           <Input
@@ -238,14 +240,14 @@ const Info = () => {
           name={`${info.firstName || ""} ${info.lastName || ""}`}
           role={info.role}
           shortBio={info.shortBio}
-          photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
+          photoURL="https://via.placeholder.com/600"
         />
         <Box p={7} />
         <FreelancerProfileCard
           name={`${info.firstName || ""} ${info.lastName || ""}`}
           role={info.role}
           longBio={info.longBio}
-          photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
+          photoURL="https://via.placeholder.com/600"
           email={info.email}
           showEmail={info.showEmail}
           phone={info.phone}

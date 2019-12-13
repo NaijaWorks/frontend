@@ -121,8 +121,7 @@ const Landing: React.FC<LandingProps> = ({ history }) => {
                 <br /> The flexibility you want.
               </H1>
               <P1 py={7} color="lightText">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore.
+                A central location for discovering Nigeria's best talent
               </P1>
               <Flex>
                 <PrimaryButton onClick={() => setModal(true)} mr={7}>
@@ -143,43 +142,43 @@ const Landing: React.FC<LandingProps> = ({ history }) => {
         <FreelancerCard
           id="100000000"
           name="Firstname, lastname"
-          role="role"
-          shortBio="short one line bio"
+          role="Role"
+          shortBio="Short one line bio"
           photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
         />
         <FreelancerCard
           id="100000001"
           name="Firstname, lastname"
-          role="role"
-          shortBio="short one line bio"
+          role="Role"
+          shortBio="Short one line bio"
           photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
         />
         <FreelancerCard
           id="100000002"
           name="Firstname, lastname"
-          role="role"
-          shortBio="short one line bio"
+          role="Role"
+          shortBio="Short one line bio"
           photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
         />
         <FreelancerCard
           id="100000003"
           name="Firstname, lastname"
-          role="role"
-          shortBio="short one line bio"
+          role="Role"
+          shortBio="Short one line bio"
           photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
         />
         <FreelancerCard
           id="100000004"
           name="Firstname, lastname"
-          role="role"
-          shortBio="short one line bio"
+          role="Role"
+          shortBio="Short one line bio"
           photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
         />
         <FreelancerCard
           id="100000005"
           name="Firstname, lastname"
-          role="role"
-          shortBio="short one line bio"
+          role="Role"
+          shortBio="Short one line bio"
           photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
         />
       </StyledBottomLanding>

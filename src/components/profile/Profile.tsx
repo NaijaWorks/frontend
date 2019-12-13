@@ -1,8 +1,9 @@
 // modules
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { RouteComponentProps } from "react-router";
 import { ChevronRight, ChevronLeft } from "react-feather";
 import GoogleMapReact from "google-map-react";
+import { gql } from "apollo-boost";
 
 // components
 import NavHeader from "../../~reusables/design-system/molecules/NavHeader";
@@ -13,56 +14,93 @@ import { Box } from "../../~reusables/design-system/atoms/Primitives/Primitives"
 import { MAX_PAGE_WIDTH } from "../../~reusables/design-system/globals/metrics";
 import FreelancerProfileCard from "../../~reusables/design-system/molecules/FreelancerProfileCard";
 import ProjectCard from "../../~reusables/design-system/molecules/ProjectCard";
+import { ProjectData } from "../admin/Projects";
+import { SkillData } from "../admin/Skills";
+import { AuthContext } from "../../contexts/AuthContext";
+import { useQuery } from "@apollo/react-hooks";
+import { H4 } from "../../~reusables/design-system/atoms/Text/Text";
 
-interface ProfileProps extends RouteComponentProps {}
+interface ProfileProps extends RouteComponentProps<any> {}
 
-const projects = [
-  {
-    title: "Project title 1",
-    imageURL:
-      "https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg",
-    description:
-      "Project description 1 Project description 1 Project description 1 Project description 1",
-    projectURL:
-      "https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg",
-    userID: "98498"
-  },
-  {
-    title: "Project title 2",
-    imageURL:
-      "https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg",
-    description: "Project description 2",
-    projectURL:
-      "https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg",
-    userID: "98498"
-  },
-  {
-    title: "Project title 3",
-    imageURL:
-      "https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg",
-    description: "Project description 3",
-    projectURL:
-      "https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg",
-    userID: "98498"
+export interface ProfileInfo {
+  id: string;
+  firstName: string;
+  lastName: string;
+  photoURL: string;
+  role: string;
+  shortBio: string;
+  longBio: string;
+  email: string;
+  showEmail: boolean;
+  phone: string;
+  showPhone: boolean;
+  location: string;
+  projects: ProjectData[];
+  skills: SkillData[];
+}
+
+// query
+export const GET_PROFILE_INFO = gql`
+  query getProfileInfo($id: ID!) {
+    user(id: $id) {
+      id
+      firstName
+      lastName
+      photoURL
+      role
+      shortBio
+      longBio
+      email
+      showEmail
+      phone
+      showPhone
+      location
+      projects {
+        id
+        title
+        imageURL
+        description
+        projectURL
+      }
+      skills {
+        id
+        name
+        logo
+      }
+    }
   }
-];
+`;
 
-const Profile: React.FC<ProfileProps> = props => {
+const Profile: React.FC<ProfileProps> = ({ match }) => {
   const [projectIndex, setProjectIndex] = useState(0);
+  const auth = useContext(AuthContext);
+
+  const { data } = useQuery<{ user: ProfileInfo }, { id: string }>(
+    GET_PROFILE_INFO,
+    {
+      variables: { id: match.params.id }
+    }
+  );
 
   const onClickArrow = (direction: string) => {
-    switch (direction) {
-      case "left":
-        setProjectIndex(
-          projectIndex !== 0 ? projectIndex - 1 : projects.length - 1
-        );
-        break;
-      case "right":
-        setProjectIndex(
-          projectIndex !== projects.length - 1 ? projectIndex + 1 : 0
-        );
-        break;
-      default:
+    if (data && data.user && data.user.projects.length > 0) {
+      switch (direction) {
+        case "left":
+          setProjectIndex(
+            projectIndex !== 0
+              ? projectIndex - 1
+              : data.user.projects.length - 1
+          );
+          break;
+        case "right":
+          setProjectIndex(
+            projectIndex !== data.user.projects.length - 1
+              ? projectIndex + 1
+              : 0
+          );
+          break;
+        default:
+      }
     }
   };
 
@@ -72,19 +110,21 @@ const Profile: React.FC<ProfileProps> = props => {
       <StyledTopProfile>
         <div>
           <Box className="profile-card-container">
-            <FreelancerProfileCard
-              name="Taiye Adeleke"
-              role="Developer"
-              longBio="Front-end developer with experience in modern technologies such as React and Apollo Graphql. "
-              photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
-              email="isaacaderogba1@gmail.com"
-              showEmail={true}
-              phone="0861241218"
-              showPhone={false}
-            />
+            {data && data.user && (
+              <FreelancerProfileCard
+                name={`${data.user.firstName} ${data.user.lastName}`}
+                role={data.user.role}
+                longBio={data.user.longBio}
+                photoURL={data.user.photoURL}
+                email={data.user.email}
+                showEmail={data.user.showEmail}
+                phone={data.user.phone}
+                showPhone={data.user.showPhone}
+              />
+            )}
           </Box>
           <Box className="middle-box">
-            {projects.length > 1 && (
+            {data && data.user && data.user.projects.length > 1 && (
               <Box
                 className="left box"
                 bg="white"
@@ -95,15 +135,15 @@ const Profile: React.FC<ProfileProps> = props => {
                 <ChevronLeft />
               </Box>
             )}
-            {projects.length > 0 && (
+            {data && data.user && data.user.projects.length > 0 && (
               <ProjectCard
-                title={projects[projectIndex].title}
-                imageURL={projects[projectIndex].imageURL}
-                description={projects[projectIndex].description}
-                projectURL={projects[projectIndex].projectURL}
+                title={data.user.projects[projectIndex].title}
+                imageURL={data.user.projects[projectIndex].imageURL || ""}
+                description={data.user.projects[projectIndex].description}
+                projectURL={data.user.projects[projectIndex].projectURL || ""}
               />
             )}
-            {projects.length > 1 && (
+            {data && data.user && data.user.projects.length > 1 && (
               <Box
                 className="right box"
                 bg="white"
@@ -115,30 +155,29 @@ const Profile: React.FC<ProfileProps> = props => {
               </Box>
             )}
           </Box>
-          <Box>SKILLS</Box>
+          {data && data.user && data.user.skills.length > 0 && (
+            <Box className="skills-card">
+              <ol>
+                {data.user.skills.map(skill => (
+                  <li key={skill.id}>
+                    <H4 color="text">{skill.name}</H4>
+                  </li>
+                ))}
+              </ol>
+            </Box>
+          )}
         </div>
       </StyledTopProfile>
       <StyledBottomProfile>
-        {/* <Map
-          style={{ width: "100%", height: "inherit", position: "static" }}
-          google={props.google}
-          zoom={14}
-        >
-          <Marker
-            title="The title attribute"
-            name="The name attribute"
-            position={{ lat: 37.759703, lng: -122.428093 }}
-          />
-        </Map> */}
         <GoogleMapReact
           bootstrapURLKeys={{
             key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY as string
           }}
           defaultCenter={{
-            lat: 59.95,
-            lng: 30.33
+            lat: 11.082,
+            lng: 7.6753
           }}
-          defaultZoom={11}
+          defaultZoom={7}
         ></GoogleMapReact>
       </StyledBottomProfile>
     </>
@@ -159,6 +198,16 @@ const StyledTopProfile = styled.div`
   height: 40vh;
   position: absolute;
   z-index: 1000;
+  width: 100%;
+  box-sizing: border-box;
+
+  .skills-card {
+    box-shadow: ${props => props.theme.shadows.shallow};
+    -webkit-box-shadow: ${props => props.theme.shadows.shallow};
+    -moz-box-shadow: ${props => props.theme.shadows.shallow};
+    border-radius: ${props => props.theme.radii[2]}px;
+    background: ${props => props.theme.colors.white};
+  }
 
   .middle-box {
     position: relative;
@@ -190,8 +239,12 @@ const StyledTopProfile = styled.div`
     }
   }
 
+  ol {
+    padding: ${props => props.theme.space[6]}px;
+  }
+
   & > div {
-    maxwidth: ${MAX_PAGE_WIDTH};
+    max-width: ${MAX_PAGE_WIDTH}px;
     margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -201,4 +254,4 @@ const StyledTopProfile = styled.div`
   }
 `;
 
-export default Profile
+export default Profile;
