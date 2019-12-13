@@ -28,7 +28,7 @@ const initialProjectState = {
   projectURL: ""
 };
 
-interface ProjectData {
+export interface ProjectData {
   id: string;
   title: string;
   imageURL: string | null;

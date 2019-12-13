@@ -21,7 +21,7 @@ const initialSkillState = {
   logo: ""
 };
 
-interface SkillData {
+export interface SkillData {
   id: string;
   name: string;
   logo: string;
@@ -114,7 +114,7 @@ const Skills = () => {
             ))}
         </ol>
         <SecondaryButton onClick={() => setSkill(initialSkillState)}>
-          Add new project
+          Add new skill
         </SecondaryButton>
       </Flex>
     </StyledSkills>
