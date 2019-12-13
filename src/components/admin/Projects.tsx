@@ -84,20 +84,21 @@ const Projects = () => {
     variables: { ...project, userId: auth.id ? auth.id : "" }
   });
 
-  const { data } = useQuery<
+  const { data, refetch } = useQuery<
     { user: { projects: ProjectData[] } },
     { id: string }
   >(PROJECTS, {
     variables: { id: auth.id ? auth.id : "" }
   });
 
-  const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // call add project or update project, catching both errors if needs be
     try {
       if (project.id) {
       } else {
-        addProject();
+        await addProject();
+        refetch();
       }
     } catch (err) {
       console.log(err);
