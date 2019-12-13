@@ -23,7 +23,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 const initialProjectState = {
   id: "",
   title: "",
-  imageURL: "",
+  imageURL: "https://via.placeholder.com/600",
   description: "",
   projectURL: ""
 };
@@ -116,7 +116,7 @@ const Projects = () => {
           mb={7}
         >
           <img
-            src="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
+            src="https://via.placeholder.com/600"
             alt={`Names's profile`}
           />
         </Container>

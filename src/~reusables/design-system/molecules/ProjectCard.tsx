@@ -4,7 +4,7 @@ import React from "react";
 // components
 import { styled } from "../../../contexts/ThemeContext";
 import { Container, Box } from "../atoms/Primitives/Primitives";
-import { H5, P2 } from "../atoms/Text/Text";
+import { P2 } from "../atoms/Text/Text";
 import { TextButton } from "../atoms/Button/Button";
 
 interface CardProps {
@@ -27,7 +27,11 @@ const ProjectCard: React.FC<CardProps> = ({
       </Box>
       <Box width="60%" p={6}>
         <P2 mt={6}>{description}</P2>
-        {projectURL && <TextButton>View project</TextButton>}
+        {projectURL && (
+          <a href={projectURL}>
+            <TextButton>View project</TextButton>
+          </a>
+        )}
       </Box>
     </StyledProjectCard>
   );

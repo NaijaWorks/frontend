@@ -31,7 +31,10 @@ const FreelancerProfileCard: React.FC<CardProps> = ({
   return (
     <StyledProfileCard flexDirection="column">
       <Box className="image-box" height="270px" width="100%">
-        <img src={photoURL} alt={`${name}'s profile`} />
+        <img
+          src={photoURL || "https://via.placeholder.com/600"}
+          alt={`${name}'s profile`}
+        />
       </Box>
       <Box pt={7} px={7}>
         <H4>{name}</H4>

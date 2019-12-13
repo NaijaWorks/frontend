@@ -7,7 +7,7 @@ import { useMutation, useQuery } from "@apollo/react-hooks";
 
 // components
 import { Container, Flex, Box } from "../atoms/Primitives/Primitives";
-import { H3, P2, H4 } from "../atoms/Text/Text";
+import { H3, H4 } from "../atoms/Text/Text";
 import { AuthContext, AuthData } from "../../../contexts/AuthContext";
 import { TextButton, PrimaryButton } from "../atoms/Button/Button";
 import PopupModal from "./PopupModal";
@@ -61,6 +61,7 @@ const NavHeader: React.FC<OwnProps> = ({ history }) => {
 
   const onClickLogout = () => {
     localStorage.clear();
+    history.push("/")
     window.location.reload();
   };
 

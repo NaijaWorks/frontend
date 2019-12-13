@@ -20,7 +20,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { useQuery } from "@apollo/react-hooks";
 import { H4 } from "../../~reusables/design-system/atoms/Text/Text";
 
-interface ProfileProps extends RouteComponentProps {}
+interface ProfileProps extends RouteComponentProps<any> {}
 
 export interface ProfileInfo {
   id: string;
@@ -71,14 +71,14 @@ export const GET_PROFILE_INFO = gql`
   }
 `;
 
-const Profile: React.FC<ProfileProps> = props => {
+const Profile: React.FC<ProfileProps> = ({ match }) => {
   const [projectIndex, setProjectIndex] = useState(0);
   const auth = useContext(AuthContext);
 
   const { data } = useQuery<{ user: ProfileInfo }, { id: string }>(
     GET_PROFILE_INFO,
     {
-      variables: { id: auth.id || "" }
+      variables: { id: match.params.id }
     }
   );
 

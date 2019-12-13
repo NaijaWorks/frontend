@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 // components
 import { styled } from "../../../contexts/ThemeContext";
-import { Container, Box } from "../atoms/Primitives/Primitives";
+import { Box } from "../atoms/Primitives/Primitives";
 import { H5, P3, P2 } from "../atoms/Text/Text";
 
 interface CardProps {
@@ -32,7 +32,7 @@ const FreelancerCard: React.FC<CardProps> = ({
         <P2 mt={6}>{shortBio}</P2>
       </Box>
       <Box className="image-box" width="30%">
-        <img src={photoURL} alt={`${name}'s profile`} />
+        <img src={photoURL || "https://via.placeholder.com/600"} alt={`${name}'s profile`} />
       </Box>
     </StyledFreelancerCard>
   );
