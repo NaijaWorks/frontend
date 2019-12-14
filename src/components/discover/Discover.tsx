@@ -11,7 +11,7 @@ import { styled } from "../../contexts/ThemeContext";
 import { MAX_PAGE_WIDTH } from "../../~reusables/design-system/globals/metrics";
 import FreelancerCard from "../../~reusables/design-system/molecules/FreelancerCard";
 
-interface UserCards {
+export interface UserCards {
   id: string;
   firstName: string;
   lastName: string;
@@ -20,7 +20,7 @@ interface UserCards {
   shortBio: string;
 }
 
-const GET_USER_CARDS = gql`
+export const GET_USER_CARDS = gql`
   query getUserCards {
     users {
       id

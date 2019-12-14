@@ -3,7 +3,7 @@ import React, { useState, useContext } from "react";
 import { RouteComponentProps, Redirect } from "react-router";
 import { styled } from "../../contexts/ThemeContext";
 import { gql } from "apollo-boost";
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation, useQuery } from "@apollo/react-hooks";
 
 // components
 import {
@@ -25,6 +25,7 @@ import { Input } from "../../~reusables/design-system/atoms/Input/Input";
 // styles
 import { MAX_PAGE_WIDTH } from "../../~reusables/design-system/globals/metrics";
 import { AuthContext, AuthData } from "../../contexts/AuthContext";
+import { UserCards, GET_USER_CARDS } from "../discover/Discover";
 
 interface LandingProps extends RouteComponentProps {}
 
@@ -50,6 +51,8 @@ const Landing: React.FC<LandingProps> = ({ history }) => {
   });
   const auth = useContext(AuthContext);
 
+  const { data } = useQuery<{ users: UserCards[] }>(GET_USER_CARDS);
+
   const [register] = useMutation<
     { register: AuthData },
     { email: string; password: string }
@@ -72,6 +75,8 @@ const Landing: React.FC<LandingProps> = ({ history }) => {
     }
   };
 
+  console.log(data);
+
   if (auth.id) return <Redirect from="/" to="/discover" />;
 
   return (
@@ -84,7 +89,7 @@ const Landing: React.FC<LandingProps> = ({ history }) => {
               onChange={e => setForm({ ...form, email: e.target.value })}
               width="100%"
               placeholder="Email address"
-              type="text"
+              type="email"
               required
             />
             <Input
@@ -139,48 +144,21 @@ const Landing: React.FC<LandingProps> = ({ history }) => {
         </Container>
       </StyledTopLanding>
       <StyledBottomLanding>
-        <FreelancerCard
-          id="100000000"
-          name="Firstname, lastname"
-          role="Role"
-          shortBio="Short one line bio"
-          photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
-        />
-        <FreelancerCard
-          id="100000001"
-          name="Firstname, lastname"
-          role="Role"
-          shortBio="Short one line bio"
-          photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
-        />
-        <FreelancerCard
-          id="100000002"
-          name="Firstname, lastname"
-          role="Role"
-          shortBio="Short one line bio"
-          photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
-        />
-        <FreelancerCard
-          id="100000003"
-          name="Firstname, lastname"
-          role="Role"
-          shortBio="Short one line bio"
-          photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
-        />
-        <FreelancerCard
-          id="100000004"
-          name="Firstname, lastname"
-          role="Role"
-          shortBio="Short one line bio"
-          photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
-        />
-        <FreelancerCard
-          id="100000005"
-          name="Firstname, lastname"
-          role="Role"
-          shortBio="Short one line bio"
-          photoURL="https://www.jeffbullas.com/wp-content/uploads/2019/11/The-Importance-of-URL-Structure-For-SEO-And-How-To-Use-It-768x512.jpg"
-        />
+        {data &&
+          data.users
+            .slice(0, 6)
+            .map(({ id, firstName, lastName, role, shortBio, photoURL }) =>
+              firstName && lastName && role ? (
+                <FreelancerCard
+                  id={id}
+                  key={id}
+                  name={`${firstName || ""} ${lastName || ""}`}
+                  role={role}
+                  shortBio={shortBio}
+                  photoURL={photoURL || "https://via.placeholder.com/150"}
+                />
+              ) : null
+            )}
       </StyledBottomLanding>
     </>
   );

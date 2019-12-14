@@ -125,9 +125,9 @@ const Skills: React.FC<OwnProps> = ({ setAdminView }) => {
           {skill.id && (
             <TextButton onClick={onDeleteSkill}>Delete skill</TextButton>
           )}
-          <PrimaryButton className="primary-btn">
+          {/* <PrimaryButton className="primary-btn">
             {skill.id ? "Update skill" : "Save skill"}
-          </PrimaryButton>
+          </PrimaryButton> */}
         </Flex>
         <Flex justifyContent="space-evenly" width="100%">
           <TextButton
