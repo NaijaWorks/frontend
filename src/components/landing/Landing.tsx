@@ -75,8 +75,6 @@ const Landing: React.FC<LandingProps> = ({ history }) => {
     }
   };
 
-  console.log(data);
-
   if (auth.id) return <Redirect from="/" to="/discover" />;
 
   return (
