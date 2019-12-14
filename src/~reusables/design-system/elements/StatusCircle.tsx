@@ -46,6 +46,7 @@ const StatusCircle: React.FC<StatusCircleProps> = ({
 };
 
 const StyledStatusCircle = styled.div`
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   justify-content: center;

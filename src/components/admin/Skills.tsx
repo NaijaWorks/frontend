@@ -29,8 +29,18 @@ export interface SkillData {
 
 // mutation
 const ADD_SKILL = gql`
-  mutation addSkill($name: String!, $logo: String, $userId: ID!) {
-    addSkill(name: $name, logo: $logo, userId: $userId) {
+  mutation addSkill($name: String!, $logo: String) {
+    addSkill(name: $name, logo: $logo) {
+      id
+      name
+      logo
+    }
+  }
+`;
+
+const DELETE_SKILL = gql`
+  mutation deleteSkill($skillId: ID!) {
+    deleteSkill(skillId: $skillId) {
       id
       name
       logo
@@ -57,7 +67,14 @@ const Skills = () => {
   const auth = useContext(AuthContext);
 
   const [addSkill] = useMutation<{ addSkill: SkillData }>(ADD_SKILL, {
-    variables: { ...skill, userId: auth.id ? auth.id : "" }
+    variables: { ...skill }
+  });
+
+  const [deleteSkill] = useMutation<
+    { deleteSkill: SkillData },
+    { skillId: string }
+  >(DELETE_SKILL, {
+    variables: { skillId: skill.id }
   });
 
   const { data, refetch } = useQuery<
@@ -75,10 +92,17 @@ const Skills = () => {
       } else {
         await addSkill();
         refetch();
+        setSkill(initialSkillState);
       }
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const onDeleteSkill = () => {
+    deleteSkill();
+    refetch();
+    setSkill(initialSkillState);
   };
 
   return (
@@ -93,7 +117,9 @@ const Skills = () => {
           required
         />
         <Flex justifyContent="space-evenly" width="100%">
-          {skill.id && <TextButton>Delete skill</TextButton>}
+          {skill.id && (
+            <TextButton onClick={onDeleteSkill}>Delete skill</TextButton>
+          )}
           <PrimaryButton className="primary-btn">
             {skill.id ? "Update skill" : "Save skill"}
           </PrimaryButton>

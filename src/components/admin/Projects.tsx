@@ -43,15 +43,49 @@ const ADD_PROJECT = gql`
     $imageURL: String
     $description: String!
     $projectURL: String
-    $userId: ID!
   ) {
     addProject(
       title: $title
       imageURL: $imageURL
       description: $description
       projectURL: $projectURL
-      userId: $userId
     ) {
+      id
+      title
+      imageURL
+      description
+      projectURL
+    }
+  }
+`;
+
+const UPDATE_PROJECT = gql`
+  mutation updateProject(
+    $projectId: ID
+    $title: String!
+    $imageURL: String
+    $description: String!
+    $projectURL: String
+  ) {
+    updateProject(
+      projectId: $projectId
+      title: $title
+      imageURL: $imageURL
+      description: $description
+      projectURL: $projectURL
+    ) {
+      id
+      title
+      imageURL
+      description
+      projectURL
+    }
+  }
+`;
+
+const DELETE_PROJECT = gql`
+  mutation deleteProject($projectId: ID!) {
+    deleteProject(projectId: $projectId) {
       id
       title
       imageURL
@@ -81,7 +115,21 @@ const Projects = () => {
   const [project, setProject] = useState<ProjectData>(initialProjectState);
   const auth = useContext(AuthContext);
   const [addProject] = useMutation<{ addProject: ProjectData }>(ADD_PROJECT, {
-    variables: { ...project, userId: auth.id ? auth.id : "" }
+    variables: { ...project }
+  });
+
+  const [updateProject] = useMutation<{ updateProject: ProjectData }>(
+    UPDATE_PROJECT,
+    {
+      variables: { ...project, projectId: project.id }
+    }
+  );
+
+  const [deleteProject] = useMutation<
+    { deleteProject: ProjectData },
+    { projectId: string }
+  >(DELETE_PROJECT, {
+    variables: { projectId: project.id }
   });
 
   const { data, refetch } = useQuery<
@@ -96,13 +144,22 @@ const Projects = () => {
     // call add project or update project, catching both errors if needs be
     try {
       if (project.id) {
+        updateProject();
+        refetch();
       } else {
         await addProject();
         refetch();
+        setProject(initialProjectState);
       }
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const onDeleteProject = () => {
+    deleteProject();
+    refetch();
+    setProject(initialProjectState);
   };
 
   return (
@@ -115,10 +172,7 @@ const Projects = () => {
           height="180px"
           mb={7}
         >
-          <img
-            src="https://via.placeholder.com/600"
-            alt={`Names's profile`}
-          />
+          <img src="https://via.placeholder.com/600" alt={`Names's profile`} />
         </Container>
         <Input
           value={project.title}
@@ -146,7 +200,9 @@ const Projects = () => {
           width="100%"
         />
         <Flex justifyContent="space-evenly" width="100%">
-          {project.id && <TextButton>Delete project</TextButton>}
+          {project.id && (
+            <TextButton onClick={onDeleteProject}>Delete project</TextButton>
+          )}
           <PrimaryButton className="primary-btn">
             {project.id ? "Update project" : "Save project"}
           </PrimaryButton>
