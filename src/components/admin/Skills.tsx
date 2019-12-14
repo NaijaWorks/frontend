@@ -14,6 +14,7 @@ import {
 import { AuthContext } from "../../contexts/AuthContext";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import { H4 } from "../../~reusables/design-system/atoms/Text/Text";
+import { AdminView } from "./Admin";
 
 const initialSkillState = {
   id: "",
@@ -62,7 +63,11 @@ const SKILLS = gql`
   }
 `;
 
-const Skills = () => {
+interface OwnProps {
+  setAdminView: React.Dispatch<React.SetStateAction<AdminView>>;
+}
+
+const Skills: React.FC<OwnProps> = ({ setAdminView }) => {
   const [skill, setSkill] = useState(initialSkillState);
   const auth = useContext(AuthContext);
 
@@ -116,7 +121,7 @@ const Skills = () => {
           width="100%"
           required
         />
-        <Flex justifyContent="space-evenly" width="100%">
+        <Flex className="buttons" justifyContent="space-evenly" width="100%">
           {skill.id && (
             <TextButton onClick={onDeleteSkill}>Delete skill</TextButton>
           )}
@@ -124,7 +129,16 @@ const Skills = () => {
             {skill.id ? "Update skill" : "Save skill"}
           </PrimaryButton>
         </Flex>
+        <Flex justifyContent="space-evenly" width="100%">
+          <TextButton
+            type="button"
+            onClick={() => setAdminView(AdminView.PROJECTS)}
+          >
+            Next
+          </TextButton>
+        </Flex>
       </form>
+
       <Flex
         flexDirection="column"
         justifyContent="flex-start"
@@ -151,6 +165,15 @@ const StyledSkills = styled.section`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: ${props => props.theme.space[7]}px;
+
+  .buttons {
+    buttons {
+      box-shadow: ${props => props.theme.shadows.deep};
+      -webkit-box-shadow: ${props => props.theme.shadows.deep};
+      -moz-box-shadow: ${props => props.theme.shadows.deep};
+      margin-bottom: ${props => props.theme.space[6]}px;
+    }
+  }
 
   input {
     box-shadow: ${props => props.theme.shadows.shallow};

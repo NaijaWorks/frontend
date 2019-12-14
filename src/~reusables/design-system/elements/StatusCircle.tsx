@@ -30,14 +30,14 @@ const StatusCircle: React.FC<StatusCircleProps> = ({
         p={4}
         color={checked ? "primary" : "greys.6"}
         borderColor={checked ? "primary" : "greys.6"}
-        fontWeight={active ? 5 : 3}
+        fontWeight={active ? 7 : 3}
       >
         <Check />
       </Container>
       <P2
         fontWeight={active ? 5 : 3}
         p={6}
-        color={checked ? "primary" : "greys.5"}
+        color={active ? "primary" : "greys.6"}
       >
         {text}
       </P2>

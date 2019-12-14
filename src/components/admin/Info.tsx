@@ -13,11 +13,12 @@ import {
   Container
 } from "../../~reusables/design-system/atoms/Primitives/Primitives";
 import { Input } from "../../~reusables/design-system/atoms/Input/Input";
-import { PrimaryButton } from "../../~reusables/design-system/atoms/Button/Button";
+import { PrimaryButton, TextButton } from "../../~reusables/design-system/atoms/Button/Button";
 import Checkbox from "../../~reusables/design-system/atoms/Checkbox/Checkbox";
 import FreelancerCard from "../../~reusables/design-system/molecules/FreelancerCard";
 import FreelancerProfileCard from "../../~reusables/design-system/molecules/FreelancerProfileCard";
 import { AuthContext } from "../../contexts/AuthContext";
+import { AdminView } from "./Admin";
 
 // query
 export interface UserInfo {
@@ -96,7 +97,11 @@ const UPDATE_USER_INFO = gql`
   }
 `;
 
-const Info = () => {
+interface OwnProps {
+  setAdminView: React.Dispatch<React.SetStateAction<AdminView>>
+}
+
+const Info:React.FC<OwnProps> = ({setAdminView}) => {
   const auth = useContext(AuthContext);
   const [info, setInfo] = useState({
     photoURL: "https://via.placeholder.com/600",
@@ -154,6 +159,7 @@ const Info = () => {
     }
   };
 
+
   return (
     <StyledInfo>
       <Flex flexDirection="column" justifyContent="center" alignItems="center">
@@ -175,7 +181,7 @@ const Info = () => {
           >
             <Upload className="upload" width={32} height={32} color="white" />
             <img
-              src={info.photoURL}
+              src={info.photoURL || "https://via.placeholder.com/600"}
               alt={`${info.firstName || ""} ${info.lastName || ""}`}
             />
           </Container>
@@ -258,6 +264,9 @@ const Info = () => {
         <PrimaryButton onClick={() => onClickUpdate()}>
           Update info
         </PrimaryButton>
+        <TextButton onClick={() => setAdminView(AdminView.SKILLS)}>
+          Next
+        </TextButton>
       </Flex>
 
       <Flex
@@ -333,10 +342,11 @@ const StyledInfo = styled.section`
     background: ${props => props.theme.colors.white};
   }
 
-  button {
+  button:first-of-type {
     box-shadow: ${props => props.theme.shadows.deep};
     -webkit-box-shadow: ${props => props.theme.shadows.deep};
     -moz-box-shadow: ${props => props.theme.shadows.deep};
+    margin-bottom: ${props => props.theme.space[6]}px;
   }
 `;
 
