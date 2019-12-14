@@ -1,6 +1,8 @@
 // modules
 import React, { useState, useContext, useEffect } from "react";
+import axios from "axios";
 import { useQuery, useMutation } from "@apollo/react-hooks";
+import { Upload } from "react-feather";
 import { gql } from "apollo-boost";
 
 // components
@@ -11,15 +13,16 @@ import {
   Container
 } from "../../~reusables/design-system/atoms/Primitives/Primitives";
 import { Input } from "../../~reusables/design-system/atoms/Input/Input";
-import { PrimaryButton } from "../../~reusables/design-system/atoms/Button/Button";
+import { PrimaryButton, TextButton } from "../../~reusables/design-system/atoms/Button/Button";
 import Checkbox from "../../~reusables/design-system/atoms/Checkbox/Checkbox";
 import FreelancerCard from "../../~reusables/design-system/molecules/FreelancerCard";
 import FreelancerProfileCard from "../../~reusables/design-system/molecules/FreelancerProfileCard";
 import { AuthContext } from "../../contexts/AuthContext";
+import { AdminView } from "./Admin";
 
 // query
 export interface UserInfo {
-  id: string;
+  id?: string;
   firstName: string;
   lastName: string;
   photoURL: string;
@@ -55,7 +58,6 @@ export const GET_USER_INFO = gql`
 // mutation
 const UPDATE_USER_INFO = gql`
   mutation(
-    $id: ID!
     $firstName: String
     $lastName: String
     $photoURL: String
@@ -68,7 +70,6 @@ const UPDATE_USER_INFO = gql`
     $longBio: String
   ) {
     updateUser(
-      id: $id
       firstName: $firstName
       lastName: $lastName
       photoURL: $photoURL
@@ -96,7 +97,11 @@ const UPDATE_USER_INFO = gql`
   }
 `;
 
-const Info = () => {
+interface OwnProps {
+  setAdminView: React.Dispatch<React.SetStateAction<AdminView>>
+}
+
+const Info:React.FC<OwnProps> = ({setAdminView}) => {
   const auth = useContext(AuthContext);
   const [info, setInfo] = useState({
     photoURL: "https://via.placeholder.com/600",
@@ -120,9 +125,7 @@ const Info = () => {
     UPDATE_USER_INFO,
     {
       variables: {
-        ...info,
-        id: auth.id || "",
-        photoURL: "https://via.placeholder.com/600"
+        ...info
       }
     }
   );
@@ -130,6 +133,23 @@ const Info = () => {
   useEffect(() => {
     if (data && data.user) setInfo(data.user);
   }, [data]);
+
+  // api/v1/upload
+  const onChangePhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files ? e.target.files[0] : null;
+    // TODO - add validation checks
+    if (file) {
+      const formData = new FormData();
+      formData.append("image", file);
+      const res = await axios.post<{ message: string; image: string }>(
+        `${process.env.REACT_APP_API_URL}/api/v1/upload`,
+        formData
+      );
+
+      setInfo({ ...info, photoURL: res.data.image });
+      updateUserInfo({ variables: { ...info, photoURL: res.data.image } });
+    }
+  };
 
   const onClickUpdate = () => {
     try {
@@ -139,17 +159,33 @@ const Info = () => {
     }
   };
 
+
   return (
     <StyledInfo>
       <Flex flexDirection="column" justifyContent="center" alignItems="center">
-        <Container
-          boxShadow="deep"
-          borderRadius={5}
-          width="120px"
-          height="120px"
-        >
-          <img src="https://via.placeholder.com/600" alt={`Names's profile`} />
-        </Container>
+        <input
+          onChange={onChangePhoto}
+          id="single"
+          name="file"
+          type="file"
+          data-cloudinary-field="image_id"
+          data-form-data="{ 'transformation': {'crop':'limit','tags':'photo','width':200,'height':200}}"
+        />
+        <label htmlFor="single">
+          <Container
+            boxShadow="deep"
+            borderRadius={5}
+            width="120px"
+            height="120px"
+            position="relative"
+          >
+            <Upload className="upload" width={32} height={32} color="white" />
+            <img
+              src={info.photoURL || "https://via.placeholder.com/600"}
+              alt={`${info.firstName || ""} ${info.lastName || ""}`}
+            />
+          </Container>
+        </label>
         <Box mt={7} className="input-column" width="100%">
           <Input
             value={info.firstName || ""}
@@ -228,6 +264,9 @@ const Info = () => {
         <PrimaryButton onClick={() => onClickUpdate()}>
           Update info
         </PrimaryButton>
+        <TextButton onClick={() => setAdminView(AdminView.SKILLS)}>
+          Next
+        </TextButton>
       </Flex>
 
       <Flex
@@ -240,14 +279,14 @@ const Info = () => {
           name={`${info.firstName || ""} ${info.lastName || ""}`}
           role={info.role}
           shortBio={info.shortBio}
-          photoURL="https://via.placeholder.com/600"
+          photoURL={info.photoURL}
         />
         <Box p={7} />
         <FreelancerProfileCard
           name={`${info.firstName || ""} ${info.lastName || ""}`}
           role={info.role}
           longBio={info.longBio}
-          photoURL="https://via.placeholder.com/600"
+          photoURL={info.photoURL}
           email={info.email}
           showEmail={info.showEmail}
           phone={info.phone}
@@ -262,6 +301,19 @@ const StyledInfo = styled.section`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: ${props => props.theme.space[8]}px;
+
+  input#single {
+    display: none;
+  }
+
+  .upload {
+    position: absolute;
+    left: 50%;
+    margin-left: -16px;
+    top: 50%;
+    margin-top: -16px;
+    cursor: pointer;
+  }
 
   img {
     width: 100%;
@@ -290,10 +342,11 @@ const StyledInfo = styled.section`
     background: ${props => props.theme.colors.white};
   }
 
-  button {
+  button:first-of-type {
     box-shadow: ${props => props.theme.shadows.deep};
     -webkit-box-shadow: ${props => props.theme.shadows.deep};
     -moz-box-shadow: ${props => props.theme.shadows.deep};
+    margin-bottom: ${props => props.theme.space[6]}px;
   }
 `;
 

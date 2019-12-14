@@ -1,7 +1,8 @@
 // modules
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { gql } from "apollo-boost";
 import { useMutation, useQuery } from "@apollo/react-hooks";
+import axios from "axios";
 
 // components
 import { styled } from "../../contexts/ThemeContext";
@@ -19,6 +20,7 @@ import {
 } from "../../~reusables/design-system/atoms/Button/Button";
 import ProjectCard from "../../~reusables/design-system/molecules/ProjectCard";
 import { AuthContext } from "../../contexts/AuthContext";
+import { Upload } from "react-feather";
 
 const initialProjectState = {
   id: "",
@@ -43,15 +45,49 @@ const ADD_PROJECT = gql`
     $imageURL: String
     $description: String!
     $projectURL: String
-    $userId: ID!
   ) {
     addProject(
       title: $title
       imageURL: $imageURL
       description: $description
       projectURL: $projectURL
-      userId: $userId
     ) {
+      id
+      title
+      imageURL
+      description
+      projectURL
+    }
+  }
+`;
+
+const UPDATE_PROJECT = gql`
+  mutation updateProject(
+    $projectId: ID
+    $title: String!
+    $imageURL: String
+    $description: String!
+    $projectURL: String
+  ) {
+    updateProject(
+      projectId: $projectId
+      title: $title
+      imageURL: $imageURL
+      description: $description
+      projectURL: $projectURL
+    ) {
+      id
+      title
+      imageURL
+      description
+      projectURL
+    }
+  }
+`;
+
+const DELETE_PROJECT = gql`
+  mutation deleteProject($projectId: ID!) {
+    deleteProject(projectId: $projectId) {
       id
       title
       imageURL
@@ -81,7 +117,21 @@ const Projects = () => {
   const [project, setProject] = useState<ProjectData>(initialProjectState);
   const auth = useContext(AuthContext);
   const [addProject] = useMutation<{ addProject: ProjectData }>(ADD_PROJECT, {
-    variables: { ...project, userId: auth.id ? auth.id : "" }
+    variables: { ...project }
+  });
+
+  const [updateProject] = useMutation<{ updateProject: ProjectData }>(
+    UPDATE_PROJECT,
+    {
+      variables: { ...project, projectId: project.id }
+    }
+  );
+
+  const [deleteProject] = useMutation<
+    { deleteProject: ProjectData },
+    { projectId: string }
+  >(DELETE_PROJECT, {
+    variables: { projectId: project.id }
   });
 
   const { data, refetch } = useQuery<
@@ -96,30 +146,79 @@ const Projects = () => {
     // call add project or update project, catching both errors if needs be
     try {
       if (project.id) {
+        updateProject();
+        refetch();
       } else {
         await addProject();
         refetch();
+        setProject(initialProjectState);
       }
     } catch (err) {
       console.log(err);
     }
   };
 
+  const onDeleteProject = () => {
+    deleteProject();
+    refetch();
+    setProject(initialProjectState);
+  };
+
+  useEffect(() => {
+    if (!project.id && data && data.user.projects.length > 0) {
+      setProject(data.user.projects[data.user.projects.length - 1]);
+    }
+  }, [data]);
+
+  // api/v1/upload
+  const onChangePhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files ? e.target.files[0] : null;
+    // TODO - add validation checks
+    if (file) {
+      const formData = new FormData();
+      formData.append("image", file);
+      const res = await axios.post<{ message: string; image: string }>(
+        `${process.env.REACT_APP_API_URL}/api/v1/upload`,
+        formData
+      );
+
+      setProject({ ...project, imageURL: res.data.image });
+
+      if (project.id) {
+        updateProject({ variables: { ...project, imageURL: res.data.image } });
+      }
+    }
+  };
+
   return (
     <StyledProjects>
       <form onSubmit={onFormSubmit}>
-        <Container
-          boxShadow="deep"
-          borderRadius={2}
-          width="100%"
-          height="180px"
-          mb={7}
-        >
-          <img
-            src="https://via.placeholder.com/600"
-            alt={`Names's profile`}
-          />
-        </Container>
+        <input
+          onChange={onChangePhoto}
+          id="single"
+          name="file"
+          type="file"
+          data-cloudinary-field="image_id"
+          data-form-data="{ 'transformation': {'crop':'limit','tags':'photo','width':200,'height':200}}"
+        />
+        {project.id && (
+          <label htmlFor="single">
+            <Container
+              boxShadow="deep"
+              borderRadius={2}
+              width="100%"
+              height="180px"
+              mb={7}
+              position="relative"
+            >
+              <Upload className="upload" width={32} height={32} color="white" />
+              <img
+                src={project.imageURL || "https://via.placeholder.com/600"}
+                alt={`${project.title || "Project"}`}
+              />
+            </Container>
+          </label>
+        )}
         <Input
           value={project.title}
           onChange={e => setProject({ ...project, title: e.target.value })}
@@ -146,7 +245,9 @@ const Projects = () => {
           width="100%"
         />
         <Flex justifyContent="space-evenly" width="100%">
-          {project.id && <TextButton>Delete project</TextButton>}
+          {project.id && (
+            <TextButton onClick={onDeleteProject}>Delete project</TextButton>
+          )}
           <PrimaryButton className="primary-btn">
             {project.id ? "Update project" : "Save project"}
           </PrimaryButton>
@@ -187,6 +288,19 @@ const StyledProjects = styled.section`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: ${props => props.theme.space[7]}px;
+
+  input#single {
+    display: none;
+  }
+
+  .upload {
+    position: absolute;
+    left: 50%;
+    margin-left: -16px;
+    top: 50%;
+    margin-top: -16px;
+    cursor: pointer;
+  }
 
   form {
     display: flex;

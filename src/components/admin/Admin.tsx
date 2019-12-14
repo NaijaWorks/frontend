@@ -1,5 +1,5 @@
 // modules
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { RouteComponentProps } from "react-router";
 import { styled } from "../../contexts/ThemeContext";
 import { Container } from "../../~reusables/design-system/atoms/Primitives/Primitives";
@@ -10,11 +10,14 @@ import StatusCircle from "../../~reusables/design-system/elements/StatusCircle";
 import Info from "./Info";
 import Skills from "./Skills";
 import Projects from "./Projects";
+import { AuthContext } from "../../contexts/AuthContext";
+import { ProfileInfo, GET_PROFILE_INFO } from "../profile/Profile";
+import { useQuery } from "@apollo/react-hooks";
 
 // styles
 
 interface AdminProps extends RouteComponentProps {}
-enum AdminView {
+export enum AdminView {
   INFO = "INFO",
   SKILLS = "SKILLS",
   PROJECTS = "PROJECTS"
@@ -22,6 +25,14 @@ enum AdminView {
 
 const Admin: React.FC<AdminProps> = () => {
   const [adminView, setAdminView] = useState<AdminView>(AdminView.INFO);
+  const auth = useContext(AuthContext);
+
+  const { data } = useQuery<{ user: ProfileInfo }, { id: string }>(
+    GET_PROFILE_INFO,
+    {
+      variables: { id: auth.id || "" }
+    }
+  );
 
   return (
     <>
@@ -31,27 +42,27 @@ const Admin: React.FC<AdminProps> = () => {
           <StatusCircle
             callback={() => setAdminView(AdminView.INFO)}
             text="Basic info"
-            checked={adminView === AdminView.INFO ? true : false}
+            checked={data && data.user.firstName ? true : false}
             active={adminView === AdminView.INFO ? true : false}
           />
           <StatusCircle
             callback={() => setAdminView(AdminView.SKILLS)}
             text="Skills"
-            checked={adminView === AdminView.SKILLS ? true : false}
+            checked={data && data.user.skills.length > 0 ? true : false}
             active={adminView === AdminView.SKILLS ? true : false}
           />
           <StatusCircle
             callback={() => setAdminView(AdminView.PROJECTS)}
             text="Projects"
-            checked={adminView === AdminView.PROJECTS ? true : false}
+            checked={data && data.user.projects.length > 0 ? true : false}
             active={adminView === AdminView.PROJECTS ? true : false}
           />
         </div>
         <div className="admin-container">
           {adminView === AdminView.INFO ? (
-            <Info />
+            <Info setAdminView={setAdminView} />
           ) : adminView === AdminView.SKILLS ? (
-            <Skills />
+            <Skills setAdminView={setAdminView} />
           ) : adminView === AdminView.PROJECTS ? (
             <Projects />
           ) : null}
