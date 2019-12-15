@@ -181,7 +181,7 @@ const Info: React.FC<OwnProps> = ({ setAdminView }) => {
           >
             <Upload className="upload" width={32} height={32} color="white" />
             <img
-              src={info.photoURL || "/profile-photo.png"}
+              src={info.photoURL === null ? "/profile-photo.png" : info.photoURL.includes('http://') ? info.photoURL.replace('http://', 'https://') : info.photoURL}
               alt={`${info.firstName || ""} ${info.lastName || ""}`}
             />
           </Container>

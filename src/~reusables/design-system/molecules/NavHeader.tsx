@@ -134,7 +134,10 @@ const NavHeader: React.FC<OwnProps> = ({ history }) => {
                 alignItems="center"
               >
                 {data && data.user && data.user.photoURL ? (
-                  <img src={data.user.photoURL} alt="Profile" />
+                  <img
+                    src={data.user.photoURL === null ? "/profile-photo.png" : data.user.photoURL.includes('http://') ? data.user.photoURL.replace('http://', 'https://') : data.user.photoURL}
+                    alt="Profile"
+                  />
                 ) : data && data.user && data.user.firstName ? (
                   <H4>
                     {(data.user.firstName && data.user.firstName[0]) || ""}
