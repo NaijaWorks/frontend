@@ -32,7 +32,7 @@ const FreelancerProfileCard: React.FC<CardProps> = ({
     <StyledProfileCard flexDirection="column">
       <Box className="image-box" height="270px" width="100%">
         <img
-          src={photoURL || "https://via.placeholder.com/600"}
+          src={photoURL.replace('http://', 'https://') || "/profile-photo.png"}
           alt={`${name}'s profile`}
         />
       </Box>
@@ -89,7 +89,7 @@ const StyledProfileCard = styled(Container)`
     box-shadow: none;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
-    border: 1px solid ${props => props.theme.colors.primary}
+    border: 1px solid ${props => props.theme.colors.primary};
     margin-left: ${props => props.theme.space[6]}px;
     margin-bottom: ${props => props.theme.space[7]}px;
   }

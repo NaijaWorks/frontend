@@ -12,7 +12,7 @@ import {
   Box
 } from "../../~reusables/design-system/atoms/Primitives/Primitives";
 import NavHeader from "../../~reusables/design-system/molecules/NavHeader";
-import { H1, P1 } from "../../~reusables/design-system/atoms/Text/Text";
+import { H1, P1, P2 } from "../../~reusables/design-system/atoms/Text/Text";
 import {
   PrimaryButton,
   SecondaryButton
@@ -27,7 +27,7 @@ import { MAX_PAGE_WIDTH } from "../../~reusables/design-system/globals/metrics";
 import { AuthContext, AuthData } from "../../contexts/AuthContext";
 import { UserCards, GET_USER_CARDS } from "../discover/Discover";
 
-interface LandingProps extends RouteComponentProps {}
+interface LandingProps extends RouteComponentProps { }
 
 // mutation
 const REGISTER = gql`
@@ -144,7 +144,7 @@ const Landing: React.FC<LandingProps> = ({ history }) => {
       <StyledBottomLanding>
         {data &&
           data.users
-            .slice(0, 6)
+            .slice(0, 7)
             .map(({ id, firstName, lastName, role, shortBio, photoURL }) =>
               firstName && lastName && role ? (
                 <FreelancerCard
@@ -153,14 +153,34 @@ const Landing: React.FC<LandingProps> = ({ history }) => {
                   name={`${firstName || ""} ${lastName || ""}`}
                   role={role}
                   shortBio={shortBio}
-                  photoURL={photoURL || "https://via.placeholder.com/150"}
+                  photoURL={photoURL !== null ? photoURL : "/profile-photo.png"}
                 />
               ) : null
             )}
       </StyledBottomLanding>
+      <Container
+        maxWidth={MAX_PAGE_WIDTH}
+        margin="0 auto"
+        justifyContent="center"
+      >
+        <SecondaryButton onClick={() => history.push("/discover")}>
+          Discover more
+        </SecondaryButton>
+      </Container>
+      <StyledFooter>
+        <P2>© 2019 Naijaworks. Made with ☕️ and 🤘🏼️ by <a href="https://github.com/IsaacAderogba" target="_blank" rel="noopener noreferrer">Isaac</a>, <a href="https://github.com/josenriagu" target="_blank" rel="noopener noreferrer">Josemaria</a> and <a href="https://github.com/OloruntobiAwoderu" target="_blank" rel="noopener noreferrer">Toby</a></P2>
+      </StyledFooter>
     </>
   );
 };
+
+const StyledFooter = styled.div`
+  margin: 0 auto;
+  padding: ${props => props.theme.space[7]}px;
+  a {
+    color: black;
+  }
+`;
 
 const StyledBottomLanding = styled.div`
   margin: 0 auto;

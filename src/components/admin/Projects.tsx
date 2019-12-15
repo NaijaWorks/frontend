@@ -25,7 +25,7 @@ import { Upload } from "react-feather";
 const initialProjectState = {
   id: "",
   title: "",
-  imageURL: "https://via.placeholder.com/600",
+  imageURL: "/profile-photo.png",
   description: "",
   projectURL: ""
 };
@@ -213,7 +213,7 @@ const Projects = () => {
             >
               <Upload className="upload" width={32} height={32} color="white" />
               <img
-                src={project.imageURL || "https://via.placeholder.com/600"}
+                src={project.imageURL || "/project-placeholder.png"}
                 alt={`${project.title || "Project"}`}
               />
             </Container>
@@ -274,7 +274,7 @@ const Projects = () => {
         {project.title && (
           <ProjectCard
             title={project.title}
-            imageURL={project.imageURL || ""}
+            imageURL={project.imageURL || "/project-placeholder.png"}
             description={project.description}
             projectURL={project.projectURL || ""}
           />

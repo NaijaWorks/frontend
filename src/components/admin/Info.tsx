@@ -101,10 +101,10 @@ interface OwnProps {
   setAdminView: React.Dispatch<React.SetStateAction<AdminView>>
 }
 
-const Info:React.FC<OwnProps> = ({setAdminView}) => {
+const Info: React.FC<OwnProps> = ({ setAdminView }) => {
   const auth = useContext(AuthContext);
   const [info, setInfo] = useState({
-    photoURL: "https://via.placeholder.com/600",
+    photoURL: "/profile-photo.png",
     firstName: "",
     lastName: "",
     role: "",
@@ -181,7 +181,7 @@ const Info:React.FC<OwnProps> = ({setAdminView}) => {
           >
             <Upload className="upload" width={32} height={32} color="white" />
             <img
-              src={info.photoURL || "https://via.placeholder.com/600"}
+              src={info.photoURL || "/profile-photo.png"}
               alt={`${info.firstName || ""} ${info.lastName || ""}`}
             />
           </Container>
