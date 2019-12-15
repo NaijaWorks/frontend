@@ -32,7 +32,7 @@ const FreelancerCard: React.FC<CardProps> = ({
         <P2 mt={6}>{shortBio}</P2>
       </Box>
       <Box className="image-box" width="30%">
-        <img src={photoURL || "https://via.placeholder.com/600"} alt={`${name}'s profile`} />
+        <img src={photoURL.replace('http://', 'https://')|| "/profile-photo.png"} alt={`${name}'s profile`} />
       </Box>
     </StyledFreelancerCard>
   );

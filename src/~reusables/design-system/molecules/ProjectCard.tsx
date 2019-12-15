@@ -4,7 +4,7 @@ import React from "react";
 // components
 import { styled } from "../../../contexts/ThemeContext";
 import { Container, Box } from "../atoms/Primitives/Primitives";
-import { P2 } from "../atoms/Text/Text";
+import { P2, H4 } from "../atoms/Text/Text";
 import { TextButton } from "../atoms/Button/Button";
 
 interface CardProps {
@@ -23,12 +23,13 @@ const ProjectCard: React.FC<CardProps> = ({
   return (
     <StyledProjectCard>
       <Box className="image-box" width="40%">
-        {imageURL && <img src={imageURL} alt={`${title} project`} />}
+        {imageURL && <img src={imageURL.replace('http://', 'https://')} alt={`${title} project`} />}
       </Box>
       <Box width="60%" p={6}>
+        <H4>{title}</H4>
         <P2 mt={6}>{description}</P2>
         {projectURL && (
-          <a href={projectURL}>
+          <a href={projectURL} target="_blank" rel="noopener noreferrer">
             <TextButton>View project</TextButton>
           </a>
         )}

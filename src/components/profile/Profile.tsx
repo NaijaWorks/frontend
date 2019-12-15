@@ -115,7 +115,7 @@ const Profile: React.FC<ProfileProps> = ({ match }) => {
                 name={`${data.user.firstName} ${data.user.lastName}`}
                 role={data.user.role}
                 longBio={data.user.longBio}
-                photoURL={data.user.photoURL}
+                photoURL={data.user.photoURL !== null ? data.user.photoURL : "/profile-photo.png"}
                 email={data.user.email}
                 showEmail={data.user.showEmail}
                 phone={data.user.phone}
@@ -138,7 +138,7 @@ const Profile: React.FC<ProfileProps> = ({ match }) => {
             {data && data.user && data.user.projects.length > 0 && (
               <ProjectCard
                 title={data.user.projects[projectIndex].title}
-                imageURL={data.user.projects[projectIndex].imageURL || ""}
+                imageURL={data.user.projects[projectIndex].imageURL || "/project-placeholder.png"}
                 description={data.user.projects[projectIndex].description}
                 projectURL={data.user.projects[projectIndex].projectURL || ""}
               />
@@ -219,7 +219,7 @@ const StyledTopProfile = styled.div`
       -webkit-box-shadow: ${props => props.theme.shadows.shallow};
       -moz-box-shadow: ${props => props.theme.shadows.shallow};
 
-      &: hover {
+      &:hover {
         box-shadow: ${props => props.theme.shadows.deepDark};
         -webkit-box-shadow: ${props => props.theme.shadows.deepDark};
         -moz-box-shadow: ${props => props.theme.shadows.deepDark};

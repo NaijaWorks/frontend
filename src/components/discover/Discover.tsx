@@ -33,7 +33,7 @@ export const GET_USER_CARDS = gql`
   }
 `;
 
-interface DiscoverProps extends RouteComponentProps {}
+interface DiscoverProps extends RouteComponentProps { }
 
 const Discover: React.FC<DiscoverProps> = () => {
   const { data } = useQuery<{ users: UserCards[] }>(GET_USER_CARDS);
@@ -52,7 +52,7 @@ const Discover: React.FC<DiscoverProps> = () => {
                   name={`${firstName || ""} ${lastName || ""}`}
                   role={role}
                   shortBio={shortBio}
-                  photoURL={photoURL || "https://via.placeholder.com/150"}
+                  photoURL={photoURL !== null ? photoURL : "/profile-photo.png"}
                 />
               ) : null
           )}
