@@ -32,7 +32,7 @@ const FreelancerCard: React.FC<CardProps> = ({
         <P2 mt={6}>{shortBio}</P2>
       </Box>
       <Box className="image-box" width="30%">
-        <img src={photoURL.replace('http://', 'https://')|| "/profile-photo.png"} alt={`${name}'s profile`} />
+        <img src={photoURL === null ? "/profile-photo.png" : photoURL.includes('http://') ? photoURL.replace('http://', 'https://') : photoURL} alt={`${name}'s profile`} />
       </Box>
     </StyledFreelancerCard>
   );
