@@ -213,7 +213,7 @@ const Projects = () => {
             >
               <Upload className="upload" width={32} height={32} color="white" />
               <img
-                src={project.imageURL || "/project-placeholder.png"}
+                src={project.imageURL === null ? "/project-placeholder.png" : project.imageURL.includes('http://') ? project.imageURL.replace('http://', 'https://') : project.imageURL}
                 alt={`${project.title || "Project"}`}
               />
             </Container>
